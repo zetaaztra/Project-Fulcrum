@@ -2,17 +2,46 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <title>Fulcrum-India</title>
-    <meta name="description" content="Fulcrum-India — built by Pravin. Update this description to reflect the app." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5" />
+    <title>Fulcrum-India — India's Community Intelligence Platform</title>
+
+    <!-- SEO Meta -->
+    <meta name="description" content="Fulcrum-India guides entrepreneurs from idea to funded business through AI-matched government schemes, community builder connections, document management, and application tracking." />
+    <meta name="keywords" content="Fulcrum India, entrepreneur, government schemes, PMEGP, MUDRA, startup funding, community builder, business registration, India startup" />
+    <meta name="author" content="Pravin" />
     <meta name="robots" content="index, follow" />
-    <meta property="og:title" content="Fulcrum-India" />
-    <meta property="og:description" content="Fulcrum-India — built by Pravin. Update this description to reflect the app." />
+
+    <!-- Theme Color (browser chrome & PWA) -->
+    <meta name="theme-color" content="#6366F1" />
+    <meta name="msapplication-TileColor" content="#0B0F19" />
+
+    <!-- Open Graph — Facebook / WhatsApp / LinkedIn -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Fulcrum-India" />
+    <meta property="og:title" content="Fulcrum-India — Every Entrepreneur Deserves a Guide" />
+    <meta property="og:description" content="From idea to funded business. Get matched with a Community Builder, discover the right government schemes, and track your funding journey — all in one place." />
+    <meta property="og:image" content="https://fulcrum-india.vercel.app/og-card.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Fulcrum-India — India's Community Intelligence Platform" />
+    <meta property="og:locale" content="en_IN" />
+
+    <!-- Twitter / X Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Fulcrum-India" />
-    <meta name="twitter:description" content="Fulcrum-India — built by Pravin. Update this description to reflect the app." />
+    <meta name="twitter:title" content="Fulcrum-India — Every Entrepreneur Deserves a Guide" />
+    <meta name="twitter:description" content="From idea to funded business. Get matched with a Community Builder, discover the right government schemes, and track your funding journey." />
+    <meta name="twitter:image" content="https://fulcrum-india.vercel.app/og-card.png" />
+    <meta name="twitter:image:alt" content="Fulcrum-India — India's Community Intelligence Platform" />
+
+    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/icon-512x512.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="/icon-192x192.png" />
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -20,5 +49,13 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Register service worker for PWA install
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(() => {});
+        });
+      }
+    </script>
   </body>
 </html>
