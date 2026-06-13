@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fulcrum OS — Application Tracking</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --primary: #6366F1; --accent: #F59E0B; --success: #10B981; --orange: #F97316; --red: #EF4444; --sky: #0EA5E9;
+    --bg: #0B0F19; --bg-card: #151B2B; --bg-hover: #1E2640; --text: #F8FAFC; --text-sec: #94A3B8; --text-muted: #64748B; --border: #1E293B;
+  }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); }
+  .topnav { background: var(--bg-card); border-bottom: 1px solid var(--border); padding: 0 32px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+  .topnav-logo { font-size: 18px; font-weight: 800; } .topnav-logo span { color: var(--primary); }
+  .topnav-links { display: flex; gap: 24px; }
+  .topnav-links a { color: var(--text-sec); text-decoration: none; font-size: 13px; font-weight: 500; padding: 8px 12px; border-radius: 6px; }
+  .topnav-links a:hover, .topnav-links a.active { color: var(--text); background: var(--bg-hover); }
+  .topnav-avatar { width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, var(--primary), #7C3AED); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+  
+  .main { max-width: 900px; padding: 28px 32px; }
+  .back-link { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-sec); cursor: pointer; margin-bottom: 20px; }
+  .back-link:hover { color: var(--text); }
+  
+  .app-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 28px; }
+  .app-header-left h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .app-header-left .subtitle { font-size: 14px; color: var(--text-sec); }
+  .status-badge { padding: 6px 14px; border-radius: 100px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .status-badge.orange { background: rgba(249,115,22,0.15); color: var(--orange); }
+  .status-badge.green { background: rgba(16,185,129,0.15); color: var(--success); }
+  .status-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  
+  .info-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+  .info-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+  .info-card .label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .info-card .value { font-size: 18px; font-weight: 700; }
+  .info-card .value.green { color: var(--success); }
+  .info-card .value.accent { color: var(--accent); }
+  
+  .progress-section { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; margin-bottom: 28px; }
+  .progress-section h3 { font-size: 15px; font-weight: 700; margin-bottom: 20px; }
+  .progress-steps { display: flex; justify-content: space-between; position: relative; }
+  .progress-steps::before { content: ''; position: absolute; top: 20px; left: 40px; right: 40px; height: 2px; background: var(--border); }
+  .progress-step { text-align: center; position: relative; z-index: 1; }
+  .progress-step .circle { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; margin: 0 auto 10px; }
+  .progress-step .circle.green { background: rgba(16,185,129,0.2); color: var(--success); border: 2px solid var(--success); }
+  .progress-step .circle.orange { background: rgba(249,115,22,0.2); color: var(--orange); border: 2px solid var(--orange); }
+  .progress-step .circle.gray { background: var(--border); color: var(--text-muted); border: 2px solid var(--text-muted); }
+  .progress-step .name { font-size: 12px; font-weight: 600; }
+  .progress-step .date { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+  
+  .timeline-section { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; }
+  .timeline-section h3 { font-size: 15px; font-weight: 700; margin-bottom: 20px; }
+  .timeline-item { display: flex; gap: 16px; padding-bottom: 20px; position: relative; }
+  .timeline-item:last-child { padding-bottom: 0; }
+  .timeline-item::before { content: ''; position: absolute; left: 19px; top: 40px; bottom: 0; width: 2px; background: var(--border); }
+  .timeline-item:last-child::before { display: none; }
+  .timeline-dot { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+  .timeline-dot.green { background: rgba(16,185,129,0.15); }
+  .timeline-dot.orange { background: rgba(249,115,22,0.15); }
+  .timeline-dot.blue { background: rgba(99,102,241,0.15); }
+  .timeline-content .title { font-size: 14px; font-weight: 600; }
+  .timeline-content .date { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .timeline-content .desc { font-size: 13px; color: var(--text-sec); margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="topnav">
+  <div class="topnav-logo">Fulcrum<span>OS</span></div>
+  <div class="topnav-links">
+    <a href="#">My Journey</a>
+    <a href="#">Schemes</a>
+    <a href="#" class="active">Applications</a>
+    <a href="#">Messages</a>
+  </div>
+  <div class="topnav-avatar">L</div>
+</div>
+
+<div class="main">
+  <div class="back-link">← Back to Applications</div>
+  
+  <div class="app-header">
+    <div class="app-header-left">
+      <h1>PMEGP Application — Indian Bank</h1>
+      <p class="subtitle">Application #PMEGP-2026-00483 · Submitted June 1, 2026</p>
+    </div>
+    <div class="status-badge orange"><span class="dot"></span> Under Review</div>
+  </div>
+  
+  <div class="info-grid">
+    <div class="info-card"><div class="label">Amount Requested</div><div class="value">₹18,00,000</div></div>
+    <div class="info-card"><div class="label">Subsidy (35%)</div><div class="value green">₹6,30,000</div></div>
+    <div class="info-card"><div class="label">Expected Decision</div><div class="value accent">June 30, 2026</div></div>
+    <div class="info-card"><div class="label">Days Pending</div><div class="value">12 of 18 avg</div></div>
+  </div>
+  
+  <div class="progress-section">
+    <h3>Application Progress</h3>
+    <div class="progress-steps">
+      <div class="progress-step">
+        <div class="circle green">✓</div>
+        <div class="name">Submitted</div>
+        <div class="date">Jun 1</div>
+      </div>
+      <div class="progress-step">
+        <div class="circle green">✓</div>
+        <div class="name">Docs Verified</div>
+        <div class="date">Jun 3</div>
+      </div>
+      <div class="progress-step">
+        <div class="circle green">✓</div>
+        <div class="name">Under Review</div>
+        <div class="date">Jun 11</div>
+      </div>
+      <div class="progress-step">
+        <div class="circle orange">⏳</div>
+        <div class="name">Bank Decision</div>
+        <div class="date">Est. Jun 30</div>
+      </div>
+      <div class="progress-step">
+        <div class="circle gray">○</div>
+        <div class="name">Disbursement</div>
+        <div class="date">Pending</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="timeline-section">
+    <h3>Activity Timeline</h3>
+    <div class="timeline-item">
+      <div class="timeline-dot green">✓</div>
+      <div class="timeline-content">
+        <div class="title">Additional document uploaded</div>
+        <div class="date">June 12, 2026 — 10:30 AM</div>
+        <div class="desc">Builder Murugan uploaded collateral document</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot blue">📋</div>
+      <div class="timeline-content">
+        <div class="title">Application moved to Under Review</div>
+        <div class="date">June 11, 2026 — 2:15 PM</div>
+        <div class="desc">Indian Bank acknowledged receipt and started review</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot blue">📄</div>
+      <div class="timeline-content">
+        <div class="title">Additional document requested</div>
+        <div class="date">June 5, 2026 — 11:00 AM</div>
+        <div class="desc">Bank requested collateral proof. Builder notified.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot green">✓</div>
+      <div class="timeline-content">
+        <div class="title">All documents verified</div>
+        <div class="date">June 3, 2026 — 4:30 PM</div>
+        <div class="desc">Builder verified all 5 documents</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot green">🚀</div>
+      <div class="timeline-content">
+        <div class="title">Application submitted</div>
+        <div class="date">June 1, 2026 — 9:00 AM</div>
+        <div class="desc">Submitted to Indian Bank, Madurai Branch via Fulcrum</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

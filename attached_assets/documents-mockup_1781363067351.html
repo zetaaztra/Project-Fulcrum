@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fulcrum OS — Documents</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --primary: #6366F1; --accent: #F59E0B; --success: #10B981; --orange: #F97316; --red: #EF4444;
+    --bg: #0B0F19; --bg-card: #151B2B; --bg-hover: #1E2640; --text: #F8FAFC; --text-sec: #94A3B8; --text-muted: #64748B; --border: #1E293B;
+  }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); }
+  .topnav { background: var(--bg-card); border-bottom: 1px solid var(--border); padding: 0 32px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+  .topnav-logo { font-size: 18px; font-weight: 800; } .topnav-logo span { color: var(--primary); }
+  .topnav-links { display: flex; gap: 24px; }
+  .topnav-links a { color: var(--text-sec); text-decoration: none; font-size: 13px; font-weight: 500; padding: 8px 12px; border-radius: 6px; }
+  .topnav-links a:hover, .topnav-links a.active { color: var(--text); background: var(--bg-hover); }
+  .topnav-avatar { width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, var(--primary), #7C3AED); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+  
+  .main { max-width: 800px; padding: 28px 32px; }
+  .page-header { margin-bottom: 24px; }
+  .page-header h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  
+  .progress-bar-container { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 28px; }
+  .progress-header { display: flex; justify-content: space-between; margin-bottom: 10px; }
+  .progress-header span { font-size: 14px; font-weight: 600; }
+  .progress-header .count { color: var(--primary); }
+  .progress-bar { height: 8px; background: var(--border); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--success)); border-radius: 100px; }
+  
+  .doc-list { display: flex; flex-direction: column; gap: 12px; }
+  .doc-item {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px;
+    display: flex; align-items: center; gap: 16px; transition: all 0.2s;
+  }
+  .doc-item:hover { border-color: var(--primary); }
+  .doc-icon { font-size: 28px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: var(--bg); }
+  .doc-info { flex: 1; }
+  .doc-name { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+  .doc-desc { font-size: 12px; color: var(--text-muted); }
+  .doc-status { display: flex; align-items: center; gap: 8px; }
+  .status-badge { padding: 4px 10px; border-radius: 100px; font-size: 11px; font-weight: 600; }
+  .status-badge.green { background: rgba(16,185,129,0.15); color: var(--success); }
+  .status-badge.amber { background: rgba(245,158,11,0.15); color: var(--accent); }
+  .status-badge.red { background: rgba(239,68,68,0.15); color: var(--red); }
+  .status-badge.gray { background: var(--border); color: var(--text-muted); }
+  
+  .upload-btn {
+    background: var(--bg-hover); border: 1px dashed var(--border); border-radius: 10px; padding: 8px 16px;
+    color: var(--text-sec); font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.2s;
+  }
+  .upload-btn:hover { border-color: var(--primary); color: var(--primary); }
+  
+  .builder-note { font-size: 11px; color: var(--accent); margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+</style>
+</head>
+<body>
+<div class="topnav">
+  <div class="topnav-logo">Fulcrum<span>OS</span></div>
+  <div class="topnav-links">
+    <a href="#">My Journey</a>
+    <a href="#" class="active">Documents <span style="background:var(--primary);color:white;font-size:10px;padding:1px 6px;border-radius:100px;">3/5</span></a>
+    <a href="#">Schemes</a>
+    <a href="#">Applications</a>
+  </div>
+  <div class="topnav-avatar">L</div>
+</div>
+
+<div class="main">
+  <div class="page-header">
+    <h1>Your Documents</h1>
+    <p style="color:var(--text-sec);font-size:14px;">Upload all required documents to proceed with your application.</p>
+  </div>
+  
+  <div class="progress-bar-container">
+    <div class="progress-header">
+      <span>Document Progress</span>
+      <span class="count">3 of 5 completed</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+  </div>
+  
+  <div class="doc-list">
+    
+    <div class="doc-item">
+      <div class="doc-icon">🪪</div>
+      <div class="doc-info">
+        <div class="doc-name">Aadhaar Card</div>
+        <div class="doc-desc">Front and back of Aadhaar card</div>
+      </div>
+      <div class="doc-status">
+        <span class="status-badge green">✓ Verified</span>
+      </div>
+    </div>
+    
+    <div class="doc-item">
+      <div class="doc-icon">📄</div>
+      <div class="doc-info">
+        <div class="doc-name">PAN Card</div>
+        <div class="doc-desc">Permanent Account Number card</div>
+      </div>
+      <div class="doc-status">
+        <span class="status-badge green">✓ Verified</span>
+      </div>
+    </div>
+    
+    <div class="doc-item">
+      <div class="doc-icon">🏠</div>
+      <div class="doc-info">
+        <div class="doc-name">Address Proof</div>
+        <div class="doc-desc">Utility bill, ration card, or voter ID</div>
+      </div>
+      <div class="doc-status">
+        <span class="status-badge green">✓ Verified</span>
+      </div>
+    </div>
+    
+    <div class="doc-item" style="border-color:var(--accent);">
+      <div class="doc-icon">🏦</div>
+      <div class="doc-info">
+        <div class="doc-name">Bank Statement</div>
+        <div class="doc-desc">Last 6 months bank statement</div>
+        <div class="builder-note">⚠️ Builder note: "Please re-upload — photo is too dark"</div>
+      </div>
+      <div class="doc-status">
+        <span class="status-badge amber">⚠ Needs Re-upload</span>
+        <button class="upload-btn">Re-upload →</button>
+      </div>
+    </div>
+    
+    <div class="doc-item" style="border-style:dashed;">
+      <div class="doc-icon">📸</div>
+      <div class="doc-info">
+        <div class="doc-name">Passport Photo</div>
+        <div class="doc-desc">White background, 3.5 x 4.5 cm</div>
+      </div>
+      <div class="doc-status">
+        <span class="status-badge gray">Not Uploaded</span>
+        <button class="upload-btn">+ Upload</button>
+      </div>
+    </div>
+    
+  </div>
+</div>
+</body>
+</html>

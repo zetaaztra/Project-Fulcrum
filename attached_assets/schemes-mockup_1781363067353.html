@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fulcrum OS — Scheme Matching</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --primary: #6366F1; --accent: #F59E0B; --success: #10B981; --orange: #F97316; --red: #EF4444; --sky: #0EA5E9;
+    --bg: #0B0F19; --bg-card: #151B2B; --bg-hover: #1E2640; --text: #F8FAFC; --text-sec: #94A3B8; --text-muted: #64748B;
+    --border: #1E293B; --glow: rgba(99,102,241,0.15);
+  }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); }
+  
+  /* NAV */
+  .topnav { background: var(--bg-card); border-bottom: 1px solid var(--border); padding: 0 32px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+  .topnav-logo { font-size: 18px; font-weight: 800; }
+  .topnav-logo span { color: var(--primary); }
+  .topnav-links { display: flex; gap: 24px; }
+  .topnav-links a { color: var(--text-sec); text-decoration: none; font-size: 13px; font-weight: 500; padding: 8px 12px; border-radius: 6px; transition: all 0.2s; }
+  .topnav-links a:hover, .topnav-links a.active { color: var(--text); background: var(--bg-hover); }
+  .topnav-right { display: flex; align-items: center; gap: 12px; }
+  .topnav-avatar { width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, var(--primary), #7C3AED); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+  
+  .layout { display: flex; }
+  .sidebar { width: 220px; background: var(--bg-card); border-right: 1px solid var(--border); padding: 20px; position: fixed; top: 56px; bottom: 0; left: 0; }
+  .sidebar-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; color: var(--text-sec); text-decoration: none; font-size: 13px; font-weight: 500; transition: all 0.2s; cursor: pointer; margin-bottom: 2px; }
+  .sidebar-item:hover { background: var(--bg-hover); color: var(--text); }
+  .sidebar-item.active { background: rgba(99,102,241,0.12); color: var(--primary); }
+  .sidebar-item .icon { font-size: 16px; width: 20px; text-align: center; }
+  .sidebar-item .badge { margin-left: auto; background: var(--primary); color: white; font-size: 10px; padding: 2px 7px; border-radius: 100px; font-weight: 700; }
+  
+  .main { flex: 1; margin-left: 220px; padding: 28px 32px; }
+  
+  .page-header { margin-bottom: 28px; }
+  .page-header h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .page-header p { font-size: 14px; color: var(--text-sec); }
+  
+  /* FILTERS */
+  .filters { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+  .filter-select {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px;
+    padding: 8px 14px; color: var(--text); font-size: 13px; outline: none; cursor: pointer;
+  }
+  .filter-select:hover { border-color: var(--primary); }
+  .filter-search {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px;
+    padding: 8px 14px; color: var(--text); font-size: 13px; width: 240px; outline: none;
+  }
+  .filter-search::placeholder { color: var(--text-muted); }
+  
+  /* SCHEME CARDS GRID */
+  .scheme-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  
+  .scheme-card {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 24px;
+    transition: all 0.3s; position: relative; overflow: hidden; cursor: pointer;
+  }
+  .scheme-card:hover { transform: translateY(-3px); border-color: var(--primary); box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
+  .scheme-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--primary), var(--accent)); opacity: 0; transition: opacity 0.3s; }
+  .scheme-card:hover::before { opacity: 1; }
+  
+  .scheme-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+  .scheme-name { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+  .scheme-ministry { font-size: 12px; color: var(--text-muted); }
+  
+  .match-score {
+    width: 52px; height: 52px; border-radius: 12px; position: relative; flex-shrink: 0;
+    background: conic-gradient(var(--primary) calc(var(--score) * 3.6deg), var(--border) 0deg);
+  }
+  .match-score-inner {
+    position: absolute; inset: 4px; background: var(--bg-card); border-radius: 9px;
+    display: flex; align-items: center; justify-content: center; flex-direction: column;
+  }
+  .match-score-value { font-size: 14px; font-weight: 800; color: var(--primary); }
+  .match-score-label { font-size: 8px; color: var(--text-muted); text-transform: uppercase; }
+  
+  .scheme-funding { display: flex; gap: 20px; margin-bottom: 16px; }
+  .funding-item .label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .funding-item .value { font-size: 15px; font-weight: 700; color: var(--success); }
+  .funding-item .value.accent { color: var(--accent); }
+  
+  .match-reasons { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+  .reason-chip {
+    background: rgba(99,102,241,0.1); color: var(--primary);
+    padding: 4px 10px; border-radius: 100px; font-size: 11px; font-weight: 600;
+  }
+  .reason-chip.green { background: rgba(16,185,129,0.1); color: var(--success); }
+  
+  .scheme-stats { display: flex; gap: 16px; padding-top: 14px; border-top: 1px solid var(--border); margin-bottom: 14px; }
+  .scheme-stat { font-size: 12px; color: var(--text-muted); }
+  .scheme-stat strong { color: var(--text); }
+  
+  .community-note {
+    background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.2);
+    border-radius: 8px; padding: 10px 14px; margin-bottom: 14px;
+  }
+  .community-note .note-text { font-size: 12px; color: var(--text-sec); line-height: 1.5; }
+  .community-note .note-author { font-size: 11px; color: var(--accent); margin-top: 4px; }
+  
+  .scheme-actions { display: flex; gap: 8px; }
+  .btn { padding: 10px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; }
+  .btn-primary { background: var(--primary); color: white; }
+  .btn-primary:hover { background: #4F46E5; }
+  .btn-secondary { background: var(--bg-hover); color: var(--text); border: 1px solid var(--border); }
+  .btn-secondary:hover { border-color: var(--primary); }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<div class="topnav">
+  <div class="topnav-logo">Fulcrum<span>OS</span></div>
+  <div class="topnav-links">
+    <a href="#">My Journey</a>
+    <a href="#" class="active">Schemes</a>
+    <a href="#">Documents</a>
+    <a href="#">Applications</a>
+    <a href="#">Messages</a>
+  </div>
+  <div class="topnav-right">
+    <div class="topnav-avatar">L</div>
+  </div>
+</div>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <a class="sidebar-item"><span class="icon">📍</span> My Journey</a>
+    <a class="sidebar-item"><span class="icon">📄</span> Documents <span class="badge">3/5</span></a>
+    <a class="sidebar-item active"><span class="icon">🏦</span> Schemes <span class="badge">8</span></a>
+    <a class="sidebar-item"><span class="icon">📋</span> Applications</a>
+    <a class="sidebar-item"><span class="icon">💬</span> Messages <span class="badge">2</span></a>
+    <a class="sidebar-item"><span class="icon">📚</span> Knowledge</a>
+    <a class="sidebar-item"><span class="icon">🏆</span> Impact</a>
+    <a class="sidebar-item"><span class="icon">⚙️</span> Settings</a>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="page-header">
+      <h1>Scheme Matches for Your Journey</h1>
+      <p>Found 8 matching schemes based on your profile — Organic Millet Foods, Madurai, ₹18L target</p>
+    </div>
+    
+    <!-- FILTERS -->
+    <div class="filters">
+      <select class="filter-select"><option>All Communities</option><option>SC</option><option>ST</option><option>OBC</option><option>Women</option></select>
+      <select class="filter-select"><option>All Sectors</option><option>Food Processing</option><option>Manufacturing</option><option>Retail</option></select>
+      <select class="filter-select"><option>All Stages</option><option>Idea</option><option>Planning</option><option>Documents</option></select>
+      <select class="filter-select"><option>Funding: Any</option><option>₹0 - ₹10L</option><option>₹10L - ₹50L</option><option>₹50L+</option></select>
+      <select class="filter-select"><option>Sort: Best Match</option><option>Highest Funding</option><option>Fastest Approval</option><option>Success Rate</option></select>
+      <input type="text" class="filter-search" placeholder="Search schemes...">
+    </div>
+    
+    <!-- SCHEME CARDS -->
+    <div class="scheme-grid">
+      
+      <!-- Card 1 -->
+      <div class="scheme-card">
+        <div class="scheme-top">
+          <div>
+            <div class="scheme-name">PMEGP</div>
+            <div class="scheme-ministry">Ministry of MSME</div>
+          </div>
+          <div class="match-score" style="--score:92">
+            <div class="match-score-inner">
+              <div class="match-score-value">92%</div>
+              <div class="match-score-label">Match</div>
+            </div>
+          </div>
+        </div>
+        <div class="scheme-funding">
+          <div class="funding-item"><div class="label">Funding</div><div class="value">₹10L – ₹1Cr</div></div>
+          <div class="funding-item"><div class="label">Subsidy</div><div class="value accent">25–35%</div></div>
+        </div>
+        <div class="match-reasons">
+          <span class="reason-chip">✓ Targets food processing</span>
+          <span class="reason-chip">✓ For SC community</span>
+          <span class="reason-chip green">✓ 82% approval in Madurai</span>
+        </div>
+        <div class="scheme-stats">
+          <span class="scheme-stat"><strong>47</strong> applications in Madurai</span>
+          <span class="scheme-stat"><strong>82%</strong> approved</span>
+          <span class="scheme-stat"><strong>18 days</strong> avg processing</span>
+        </div>
+        <div class="community-note">
+          <div class="note-text">💡 "Apply through Regional Branch instead of Local Branch for faster processing. They're more familiar with PMEGP."</div>
+          <div class="note-author">— Murugan S., Madurai</div>
+        </div>
+        <div class="scheme-actions">
+          <button class="btn btn-primary">View Details</button>
+          <button class="btn btn-secondary">Apply →</button>
+        </div>
+      </div>
+      
+      <!-- Card 2 -->
+      <div class="scheme-card">
+        <div class="scheme-top">
+          <div>
+            <div class="scheme-name">Stand-Up India</div>
+            <div class="scheme-ministry">Ministry of Finance</div>
+          </div>
+          <div class="match-score" style="--score:78">
+            <div class="match-score-inner">
+              <div class="match-score-value">78%</div>
+              <div class="match-score-label">Match</div>
+            </div>
+          </div>
+        </div>
+        <div class="scheme-funding">
+          <div class="funding-item"><div class="label">Funding</div><div class="value">₹10L – ₹1Cr</div></div>
+          <div class="funding-item"><div class="label">Subsidy</div><div class="value accent">Collateral-free</div></div>
+        </div>
+        <div class="match-reasons">
+          <span class="reason-chip">✓ For SC/ST/Women</span>
+          <span class="reason-chip">✓ Green field projects</span>
+        </div>
+        <div class="scheme-stats">
+          <span class="scheme-stat"><strong>23</strong> applications in Madurai</span>
+          <span class="scheme-stat"><strong>71%</strong> approved</span>
+          <span class="scheme-stat"><strong>28 days</strong> avg processing</span>
+        </div>
+        <div class="scheme-actions">
+          <button class="btn btn-primary">View Details</button>
+          <button class="btn btn-secondary">Apply →</button>
+        </div>
+      </div>
+      
+      <!-- Card 3 -->
+      <div class="scheme-card">
+        <div class="scheme-top">
+          <div>
+            <div class="scheme-name">MUDRA — Tarun</div>
+            <div class="scheme-ministry">MUDRA Ltd</div>
+          </div>
+          <div class="match-score" style="--score:71">
+            <div class="match-score-inner">
+              <div class="match-score-value">71%</div>
+              <div class="match-score-label">Match</div>
+            </div>
+          </div>
+        </div>
+        <div class="scheme-funding">
+          <div class="funding-item"><div class="label">Funding</div><div class="value">₹5L – ₹10L</div></div>
+          <div class="funding-item"><div class="label">Interest</div><div class="value accent">8.5–11%</div></div>
+        </div>
+        <div class="match-reasons">
+          <span class="reason-chip">✓ Quick processing</span>
+          <span class="reason-chip">✓ Minimal docs</span>
+        </div>
+        <div class="scheme-stats">
+          <span class="scheme-stat"><strong>156</strong> applications in Madurai</span>
+          <span class="scheme-stat"><strong>89%</strong> approved</span>
+          <span class="scheme-stat"><strong>12 days</strong> avg processing</span>
+        </div>
+        <div class="scheme-actions">
+          <button class="btn btn-primary">View Details</button>
+          <button class="btn btn-secondary">Apply →</button>
+        </div>
+      </div>
+      
+      <!-- Card 4 -->
+      <div class="scheme-card">
+        <div class="scheme-top">
+          <div>
+            <div class="scheme-name">NSFDC Term Loan</div>
+            <div class="scheme-ministry">Ministry of Social Justice</div>
+          </div>
+          <div class="match-score" style="--score:85">
+            <div class="match-score-inner">
+              <div class="match-score-value">85%</div>
+              <div class="match-score-label">Match</div>
+            </div>
+          </div>
+        </div>
+        <div class="scheme-funding">
+          <div class="funding-item"><div class="label">Funding</div><div class="value">Up to ₹45L</div></div>
+          <div class="funding-item"><div class="label">Interest</div><div class="value accent">8% fixed</div></div>
+        </div>
+        <div class="match-reasons">
+          <span class="reason-chip">✓ For SC community</span>
+          <span class="reason-chip">✓ Up to ₹45L</span>
+          <span class="reason-chip green">✓ Low interest</span>
+        </div>
+        <div class="scheme-stats">
+          <span class="scheme-stat"><strong>34</strong> applications in TN</span>
+          <span class="scheme-stat"><strong>76%</strong> approved</span>
+          <span class="scheme-stat"><strong>21 days</strong> avg processing</span>
+        </div>
+        <div class="scheme-actions">
+          <button class="btn btn-primary">View Details</button>
+          <button class="btn btn-secondary">Apply →</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fulcrum OS — Login</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --primary: #6366F1; --accent: #F59E0B; --success: #10B981;
+    --bg: #0B0F19; --bg-card: #151B2B; --text: #F8FAFC; --text-sec: #94A3B8; --text-muted: #64748B; --border: #1E293B;
+  }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  
+  .bg-gradient {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 50% at 50% -20%, rgba(99,102,241,0.25), transparent),
+                radial-gradient(ellipse 50% 40% at 80% 60%, rgba(139,92,246,0.15), transparent);
+  }
+  .bg-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  
+  .card {
+    position: relative; z-index: 1;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 20px; padding: 48px 40px; width: 420px;
+    box-shadow: 0 25px 80px rgba(0,0,0,0.4);
+  }
+  
+  .logo { font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 8px; }
+  .logo span { color: var(--primary); }
+  .subtitle { text-align: center; font-size: 14px; color: var(--text-sec); margin-bottom: 32px; }
+  
+  .form-group { margin-bottom: 20px; }
+  .form-label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--text-sec); }
+  .form-input {
+    width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
+    padding: 12px 16px; color: var(--text); font-size: 14px; outline: none; transition: border-color 0.2s;
+  }
+  .form-input:focus { border-color: var(--primary); }
+  .form-input::placeholder { color: var(--text-muted); }
+  
+  .phone-input { display: flex; gap: 8px; }
+  .phone-prefix { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; color: var(--text-sec); font-size: 14px; }
+  .phone-input .form-input { flex: 1; }
+  
+  .btn {
+    width: 100%; padding: 14px; border-radius: 10px; font-size: 15px; font-weight: 700;
+    cursor: pointer; border: none; transition: all 0.2s;
+  }
+  .btn-primary { background: linear-gradient(135deg, var(--primary), #7C3AED); color: white; box-shadow: 0 0 30px rgba(99,102,241,0.2); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 30px rgba(99,102,241,0.3); }
+  .btn-secondary { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
+  .btn-secondary:hover { border-color: var(--primary); }
+  
+  .divider { display: flex; align-items: center; gap: 16px; margin: 24px 0; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .divider span { font-size: 12px; color: var(--text-muted); }
+  
+  .link { color: var(--primary); text-decoration: none; font-size: 13px; font-weight: 500; }
+  .link:hover { text-decoration: underline; }
+  .text-center { text-align: center; }
+  .mt-4 { margin-top: 16px; }
+  
+  .otp-inputs { display: flex; gap: 10px; justify-content: center; margin-bottom: 24px; }
+  .otp-input {
+    width: 48px; height: 56px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
+    text-align: center; font-size: 22px; font-weight: 700; color: var(--text); outline: none;
+  }
+  .otp-input:focus { border-color: var(--primary); }
+  
+  .resend { font-size: 12px; color: var(--text-muted); }
+  .resend span { color: var(--primary); cursor: pointer; }
+  
+  .lang-selector { display: flex; gap: 8px; justify-content: center; margin-top: 24px; }
+  .lang-btn { padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; background: var(--bg); border: 1px solid var(--border); color: var(--text-sec); cursor: pointer; }
+  .lang-btn.active { border-color: var(--primary); color: var(--primary); }
+  
+  .back-link { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-sec); cursor: pointer; margin-bottom: 20px; }
+  .back-link:hover { color: var(--text); }
+</style>
+</head>
+<body>
+<div class="bg-gradient"></div>
+<div class="bg-grid"></div>
+
+<!-- LOGIN CARD -->
+<div class="card" id="loginCard">
+  <div class="logo">Fulcrum<span>OS</span></div>
+  <p class="subtitle">Enter your phone number to continue</p>
+  
+  <div class="form-group">
+    <label class="form-label">Phone Number</label>
+    <div class="phone-input">
+      <div class="phone-prefix">🇮🇳 +91</div>
+      <input type="tel" class="form-input" placeholder="98765 43210" maxlength="10">
+    </div>
+  </div>
+  
+  <button class="btn btn-primary" onclick="showOtp()">Send OTP →</button>
+  
+  <div class="divider"><span>or</span></div>
+  
+  <button class="btn btn-secondary">🔐 Continue with DigiLocker</button>
+  
+  <p class="text-center mt-4">New to Fulcrum? <a href="#" class="link">Create account</a></p>
+  
+  <div class="lang-selector">
+    <div class="lang-btn active">English</div>
+    <div class="lang-btn">தமிழ்</div>
+    <div class="lang-btn">हिंदी</div>
+  </div>
+</div>
+
+<!-- OTP CARD -->
+<div class="card" id="otpCard" style="display:none;">
+  <div class="back-link" onclick="showLogin()">← Back</div>
+  <div class="logo">Fulcrum<span>OS</span></div>
+  <p class="subtitle">Enter the 6-digit code sent to +91 ••••••43210</p>
+  
+  <div class="otp-inputs">
+    <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this)">
+    <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this)">
+    <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this)">
+    <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this)">
+    <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this)">
+    <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this)">
+  </div>
+  
+  <button class="btn btn-primary">Verify & Continue →</button>
+  
+  <p class="text-center mt-4 resend">Didn't receive code? <span>Resend OTP (45s)</span></p>
+</div>
+
+<script>
+function showOtp() { document.getElementById('loginCard').style.display='none'; document.getElementById('otpCard').style.display='block'; document.querySelector('.otp-input').focus(); }
+function showLogin() { document.getElementById('otpCard').style.display='none'; document.getElementById('loginCard').style.display='block'; }
+function moveToNext(el) { if(el.value.length === 1 && el.nextElementSibling) el.nextElementSibling.focus(); }
+</script>
+</body>
+</html>

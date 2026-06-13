@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fulcrum OS — Builder Directory</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --primary: #6366F1; --accent: #F59E0B; --success: #10B981; --orange: #F97316; --red: #EF4444; --sky: #0EA5E9;
+    --bg: #0B0F19; --bg-card: #151B2B; --bg-hover: #1E2640; --text: #F8FAFC; --text-sec: #94A3B8; --text-muted: #64748B;
+    --border: #1E293B;
+  }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); }
+  .topnav { background: var(--bg-card); border-bottom: 1px solid var(--border); padding: 0 32px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+  .topnav-logo { font-size: 18px; font-weight: 800; } .topnav-logo span { color: var(--primary); }
+  .topnav-links { display: flex; gap: 24px; }
+  .topnav-links a { color: var(--text-sec); text-decoration: none; font-size: 13px; font-weight: 500; padding: 8px 12px; border-radius: 6px; }
+  .topnav-links a:hover, .topnav-links a.active { color: var(--text); background: var(--bg-hover); }
+  .topnav-avatar { width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, var(--primary), #7C3AED); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+  
+  .main { padding: 28px 32px; max-width: 1200px; }
+  .page-header { margin-bottom: 24px; }
+  .page-header h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .page-header p { font-size: 14px; color: var(--text-sec); }
+  
+  .filters { display: flex; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+  .filter-select { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; color: var(--text); font-size: 13px; outline: none; cursor: pointer; }
+  .filter-search { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; color: var(--text); font-size: 13px; width: 260px; outline: none; }
+  .filter-search::placeholder { color: var(--text-muted); }
+  
+  .builder-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  
+  .builder-card {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 24px;
+    transition: all 0.3s; position: relative; overflow: hidden; cursor: pointer;
+  }
+  .builder-card:hover { transform: translateY(-4px); border-color: var(--primary); box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
+  .builder-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--primary), var(--accent)); opacity: 0; transition: opacity 0.3s; }
+  .builder-card:hover::before { opacity: 1; }
+  
+  .builder-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+  .builder-avatar {
+    width: 48px; height: 48px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 700; flex-shrink: 0;
+  }
+  .builder-info h3 { font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+  .builder-info .verified { color: var(--success); font-size: 13px; }
+  .builder-info .title { font-size: 12px; color: var(--text-sec); margin-top: 2px; }
+  .builder-info .location { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  
+  .builder-rating { display: flex; align-items: center; gap: 4px; margin-bottom: 12px; }
+  .builder-rating .stars { color: var(--accent); font-size: 13px; }
+  .builder-rating .score { font-size: 13px; font-weight: 600; }
+  .builder-rating .count { font-size: 11px; color: var(--text-muted); }
+  
+  .builder-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+  .builder-stat { text-align: center; padding: 8px; background: var(--bg); border-radius: 8px; }
+  .builder-stat .value { font-size: 16px; font-weight: 700; }
+  .builder-stat .label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  
+  .builder-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .builder-tag { background: rgba(99,102,241,0.1); color: var(--primary); padding: 3px 8px; border-radius: 100px; font-size: 10px; font-weight: 600; }
+  
+  .builder-languages { font-size: 11px; color: var(--text-muted); margin-bottom: 14px; }
+  .builder-languages span { color: var(--text-sec); }
+  
+  .builder-status { display: flex; align-items: center; gap: 6px; margin-bottom: 14px; }
+  .builder-status .dot { width: 7px; height: 7px; border-radius: 50%; }
+  .builder-status .dot.green { background: var(--success); }
+  .builder-status .dot.amber { background: var(--accent); }
+  .builder-status .text { font-size: 12px; color: var(--text-sec); }
+  
+  .builder-actions { display: flex; gap: 8px; }
+  .btn { padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; }
+  .btn-primary { background: var(--primary); color: white; }
+  .btn-secondary { background: var(--bg-hover); color: var(--text); border: 1px solid var(--border); }
+</style>
+</head>
+<body>
+<div class="topnav">
+  <div class="topnav-logo">Fulcrum<span>OS</span></div>
+  <div class="topnav-links">
+    <a href="#">My Journey</a>
+    <a href="#">Schemes</a>
+    <a href="#" class="active">Builders</a>
+    <a href="#">Messages</a>
+  </div>
+  <div class="topnav-avatar">L</div>
+</div>
+
+<div class="main">
+  <div class="page-header">
+    <h1>Community Builders</h1>
+    <p>89 verified builders ready to guide you. Filter by expertise, language, or location.</p>
+  </div>
+  
+  <div class="filters">
+    <select class="filter-select"><option>All Expertise</option><option>Banking</option><option>Legal</option><option>GST</option><option>Manufacturing</option></select>
+    <select class="filter-select"><option>All Languages</option><option>Tamil</option><option>Hindi</option><option>English</option></select>
+    <select class="filter-select"><option>All Districts</option><option>Madurai</option><option>Chennai</option><option>Coimbatore</option></select>
+    <select class="filter-select"><option>Availability</option><option>Accepting Cases</option><option>All</option></select>
+    <input type="text" class="filter-search" placeholder="Search builders...">
+  </div>
+  
+  <div class="builder-grid">
+    
+    <div class="builder-card">
+      <div class="builder-header">
+        <div class="builder-avatar" style="background:linear-gradient(135deg,var(--primary),#7C3AED)">M</div>
+        <div class="builder-info">
+          <h3>Murugan S. <span class="verified">✓</span></h3>
+          <div class="title">Retired Bank Officer</div>
+          <div class="location">📍 Madurai, Tamil Nadu</div>
+        </div>
+      </div>
+      <div class="builder-rating">
+        <span class="stars">★★★★★</span>
+        <span class="score">4.9</span>
+        <span class="count">(127 reviews)</span>
+      </div>
+      <div class="builder-stats">
+        <div class="builder-stat"><div class="value">42</div><div class="label">Businesses</div></div>
+        <div class="builder-stat"><div class="value">89%</div><div class="label">Success</div></div>
+        <div class="builder-stat"><div class="value">₹4.8Cr</div><div class="label">Funding</div></div>
+      </div>
+      <div class="builder-tags">
+        <span class="builder-tag">Banking</span>
+        <span class="builder-tag">PMEGP</span>
+        <span class="builder-tag">MUDRA</span>
+        <span class="builder-tag">Food Processing</span>
+      </div>
+      <div class="builder-languages">Languages: <span>தமிழ் · English</span></div>
+      <div class="builder-status"><span class="dot green"></span><span class="text">Accepting new cases · &lt;2h response</span></div>
+      <div class="builder-actions"><button class="btn btn-primary">Message</button><button class="btn btn-secondary">View Profile</button></div>
+    </div>
+    
+    <div class="builder-card">
+      <div class="builder-header">
+        <div class="builder-avatar" style="background:linear-gradient(135deg,var(--success),#059669)">P</div>
+        <div class="builder-info">
+          <h3>Priya R. <span class="verified">✓</span></h3>
+          <div class="title">Chartered Accountant</div>
+          <div class="location">📍 Chennai, Tamil Nadu</div>
+        </div>
+      </div>
+      <div class="builder-rating"><span class="stars">★★★★★</span><span class="score">4.8</span><span class="count">(98 reviews)</span></div>
+      <div class="builder-stats">
+        <div class="builder-stat"><div class="value">38</div><div class="label">Businesses</div></div>
+        <div class="builder-stat"><div class="value">85%</div><div class="label">Success</div></div>
+        <div class="builder-stat"><div class="value">₹3.2Cr</div><div class="label">Funding</div></div>
+      </div>
+      <div class="builder-tags"><span class="builder-tag">GST</span><span class="builder-tag">Tax</span><span class="builder-tag">Compliance</span></div>
+      <div class="builder-languages">Languages: <span>தமிழ் · English · हिंदी</span></div>
+      <div class="builder-status"><span class="dot green"></span><span class="text">Accepting new cases · &lt;4h response</span></div>
+      <div class="builder-actions"><button class="btn btn-primary">Message</button><button class="btn btn-secondary">View Profile</button></div>
+    </div>
+    
+    <div class="builder-card">
+      <div class="builder-header">
+        <div class="builder-avatar" style="background:linear-gradient(135deg,var(--accent),#D97706)">K</div>
+        <div class="builder-info">
+          <h3>Karthik V. <span class="verified">✓</span></h3>
+          <div class="title">MSME Consultant</div>
+          <div class="location">📍 Coimbatore, Tamil Nadu</div>
+        </div>
+      </div>
+      <div class="builder-rating"><span class="stars">★★★★☆</span><span class="score">4.7</span><span class="count">(76 reviews)</span></div>
+      <div class="builder-stats">
+        <div class="builder-stat"><div class="value">31</div><div class="label">Businesses</div></div>
+        <div class="builder-stat"><div class="value">78%</div><div class="label">Success</div></div>
+        <div class="builder-stat"><div class="value">₹2.1Cr</div><div class="label">Funding</div></div>
+      </div>
+      <div class="builder-tags"><span class="builder-tag">Manufacturing</span><span class="builder-tag">Stand-Up India</span></div>
+      <div class="builder-languages">Languages: <span>தமிழ் · English</span></div>
+      <div class="builder-status"><span class="dot amber"></span><span class="text">Overloaded (15 cases) · &lt;24h response</span></div>
+      <div class="builder-actions"><button class="btn btn-primary">Message</button><button class="btn btn-secondary">View Profile</button></div>
+    </div>
+    
+    <div class="builder-card">
+      <div class="builder-header">
+        <div class="builder-avatar" style="background:linear-gradient(135deg,var(--sky),#0284C7)">S</div>
+        <div class="builder-info">
+          <h3>Selvi M. <span class="verified">✓</span></h3>
+          <div class="title">Textile Export Expert</div>
+          <div class="location">📍 Tirupur, Tamil Nadu</div>
+        </div>
+      </div>
+      <div class="builder-rating"><span class="stars">★★★★★</span><span class="score">4.9</span><span class="count">(64 reviews)</span></div>
+      <div class="builder-stats">
+        <div class="builder-stat"><div class="value">27</div><div class="label">Businesses</div></div>
+        <div class="builder-stat"><div class="value">91%</div><div class="label">Success</div></div>
+        <div class="builder-stat"><div class="value">₹5.1Cr</div><div class="label">Funding</div></div>
+      </div>
+      <div class="builder-tags"><span class="builder-tag">Textile</span><span class="builder-tag">Export</span><span class="builder-tag">GST</span></div>
+      <div class="builder-languages">Languages: <span>தமிழ் · English</span></div>
+      <div class="builder-status"><span class="dot green"></span><span class="text">Accepting new cases · &lt;6h response</span></div>
+      <div class="builder-actions"><button class="btn btn-primary">Message</button><button class="btn btn-secondary">View Profile</button></div>
+    </div>
+    
+  </div>
+</div>
+</body>
+</html>

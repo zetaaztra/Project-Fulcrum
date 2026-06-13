@@ -1,0 +1,2 @@
+- [Orval param collision](orval-param-collision.md) — endpoints with BOTH path params AND query params cause TS2308 Params type collisions in generated barrel exports.
+- [Express 5 TS strict routes](express5-route-return.md) — async route handlers need `: Promise<void>` and `return;` after early res calls to satisfy TS strict mode.

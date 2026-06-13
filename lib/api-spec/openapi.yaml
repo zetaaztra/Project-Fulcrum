@@ -3,20 +3,38 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Fulcrum-India API specification
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: auth
+    description: Authentication
+  - name: entrepreneurs
+    description: Entrepreneur management
+  - name: builders
+    description: Community builder management
+  - name: schemes
+    description: Government scheme management
+  - name: documents
+    description: Document management
+  - name: applications
+    description: Loan/scheme applications
+  - name: messages
+    description: Messaging
+  - name: journey
+    description: Entrepreneur journey tracking
+  - name: admin
+    description: Admin analytics and management
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +42,528 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  # AUTH
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Login with phone number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        "200":
+          description: Login initiated, OTP sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthSession"
+
+  /auth/verify:
+    post:
+      operationId: verifyOtp
+      tags: [auth]
+      summary: Verify OTP
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OtpInput"
+      responses:
+        "200":
+          description: OTP verified
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthSession"
+
+  /auth/me:
+    get:
+      operationId: getMe
+      tags: [auth]
+      summary: Get current user session
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthSession"
+
+  # ENTREPRENEURS
+  /entrepreneurs:
+    get:
+      operationId: listEntrepreneurs
+      tags: [entrepreneurs]
+      summary: List entrepreneurs
+      parameters:
+        - name: district
+          in: query
+          schema:
+            type: string
+        - name: stage
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of entrepreneurs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Entrepreneur"
+
+  /entrepreneurs/{id}:
+    get:
+      operationId: getEntrepreneur
+      tags: [entrepreneurs]
+      summary: Get entrepreneur by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Entrepreneur
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Entrepreneur"
+
+  # BUILDERS
+  /builders:
+    get:
+      operationId: listBuilders
+      tags: [builders]
+      summary: List community builders
+      parameters:
+        - name: district
+          in: query
+          schema:
+            type: string
+        - name: language
+          in: query
+          schema:
+            type: string
+        - name: expertise
+          in: query
+          schema:
+            type: string
+        - name: available
+          in: query
+          schema:
+            type: boolean
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of builders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Builder"
+
+  /builders/{id}:
+    get:
+      operationId: getBuilder
+      tags: [builders]
+      summary: Get builder by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Builder
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Builder"
+
+  /builders/top:
+    get:
+      operationId: getTopBuilders
+      tags: [builders]
+      summary: Get top-rated builders
+      responses:
+        "200":
+          description: Top builders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Builder"
+
+  # SCHEMES
+  /schemes:
+    get:
+      operationId: listSchemes
+      tags: [schemes]
+      summary: List government schemes
+      parameters:
+        - name: community
+          in: query
+          schema:
+            type: string
+        - name: sector
+          in: query
+          schema:
+            type: string
+        - name: stage
+          in: query
+          schema:
+            type: string
+        - name: minFunding
+          in: query
+          schema:
+            type: integer
+        - name: maxFunding
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: offset
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of schemes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Scheme"
+
+  /schemes/{id}:
+    get:
+      operationId: getScheme
+      tags: [schemes]
+      summary: Get scheme by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Scheme
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Scheme"
+
+  /schemes/matches/{entrepreneurId}:
+    get:
+      operationId: getSchemeMatches
+      tags: [schemes]
+      summary: Get scheme matches for an entrepreneur
+      parameters:
+        - name: entrepreneurId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Matched schemes with scores
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SchemeMatch"
+
+  # DOCUMENTS
+  /documents/{entrepreneurId}:
+    get:
+      operationId: listDocuments
+      tags: [documents]
+      summary: List documents for entrepreneur
+      parameters:
+        - name: entrepreneurId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Documents
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Document"
+
+  /documents/{entrepreneurId}/{documentId}/status:
+    patch:
+      operationId: updateDocumentStatus
+      tags: [documents]
+      summary: Update document status
+      parameters:
+        - name: entrepreneurId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: documentId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DocumentStatusUpdate"
+      responses:
+        "200":
+          description: Updated document
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Document"
+
+  # APPLICATIONS
+  /applications:
+    get:
+      operationId: listApplications
+      tags: [applications]
+      summary: List applications
+      parameters:
+        - name: entrepreneurId
+          in: query
+          schema:
+            type: integer
+        - name: status
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Applications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Application"
+
+  /applications/{id}:
+    get:
+      operationId: getApplication
+      tags: [applications]
+      summary: Get application by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Application
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Application"
+
+  # MESSAGES
+  /messages/{conversationId}:
+    get:
+      operationId: listMessages
+      tags: [messages]
+      summary: List messages in a conversation
+      parameters:
+        - name: conversationId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Messages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Message"
+
+  /messages:
+    post:
+      operationId: sendMessage
+      tags: [messages]
+      summary: Send a message
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MessageInput"
+      responses:
+        "201":
+          description: Message sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+
+  /conversations:
+    get:
+      operationId: listConversations
+      tags: [messages]
+      summary: List conversations for current user
+      responses:
+        "200":
+          description: Conversations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Conversation"
+
+  # JOURNEY
+  /journey/{entrepreneurId}:
+    get:
+      operationId: getJourney
+      tags: [journey]
+      summary: Get entrepreneur journey with all milestones and events
+      parameters:
+        - name: entrepreneurId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Journey data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Journey"
+
+  /journey/{entrepreneurId}/events:
+    get:
+      operationId: getJourneyEvents
+      tags: [journey]
+      summary: List journey events
+      parameters:
+        - name: entrepreneurId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Journey events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/JourneyEvent"
+
+  # ADMIN / ANALYTICS
+  /admin/stats:
+    get:
+      operationId: getAdminStats
+      tags: [admin]
+      summary: Get platform-wide statistics
+      responses:
+        "200":
+          description: Platform stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminStats"
+
+  /admin/activity-feed:
+    get:
+      operationId: getActivityFeed
+      tags: [admin]
+      summary: Get live activity feed
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Activity feed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ActivityEvent"
+
+  /admin/district-stats:
+    get:
+      operationId: getDistrictStats
+      tags: [admin]
+      summary: Get stats grouped by district
+      responses:
+        "200":
+          description: District stats
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DistrictStat"
+
+  /admin/alerts:
+    get:
+      operationId: getAdminAlerts
+      tags: [admin]
+      summary: Get admin alerts
+      responses:
+        "200":
+          description: Alerts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AdminAlert"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +574,506 @@ components:
       required:
         - status
 
+    # AUTH
+    LoginInput:
+      type: object
+      required: [phone]
+      properties:
+        phone:
+          type: string
+        role:
+          type: ["string", "null"]
+
+    OtpInput:
+      type: object
+      required: [phone, otp]
+      properties:
+        phone:
+          type: string
+        otp:
+          type: string
+
+    AuthSession:
+      type: object
+      required: [userId, phone, role, name]
+      properties:
+        userId:
+          type: integer
+        phone:
+          type: string
+        role:
+          type: string
+          enum: [entrepreneur, builder, coordinator, admin, superadmin]
+        name:
+          type: string
+        district:
+          type: ["string", "null"]
+        language:
+          type: string
+        authenticated:
+          type: boolean
+
+    # ENTREPRENEUR
+    Entrepreneur:
+      type: object
+      required: [id, name, phone, district, state, businessName, businessCategory, stage, createdAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        phone:
+          type: string
+        district:
+          type: string
+        state:
+          type: string
+        businessName:
+          type: string
+        businessCategory:
+          type: string
+        stage:
+          type: string
+          enum: [idea, builder_assigned, documents, applied, under_review, approved, rejected, revenue, employer]
+        targetFunding:
+          type: integer
+        assignedBuilderId:
+          type: ["integer", "null"]
+        language:
+          type: string
+        community:
+          type: string
+        avatarUrl:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    # BUILDER
+    Builder:
+      type: object
+      required: [id, name, title, district, rating, reviewCount, businessesGuided, successRate, totalFunding, languages, expertise, availability, responseTime, isVerified]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        title:
+          type: string
+        district:
+          type: string
+        state:
+          type: string
+        rating:
+          type: number
+        reviewCount:
+          type: integer
+        businessesGuided:
+          type: integer
+        successRate:
+          type: number
+        totalFunding:
+          type: integer
+        languages:
+          type: array
+          items:
+            type: string
+        expertise:
+          type: array
+          items:
+            type: string
+        availability:
+          type: string
+          enum: [accepting, overloaded, unavailable]
+        responseTime:
+          type: string
+        isVerified:
+          type: boolean
+        avatarUrl:
+          type: ["string", "null"]
+        bio:
+          type: ["string", "null"]
+        activeCases:
+          type: integer
+        joinedAt:
+          type: string
+
+    # SCHEME
+    Scheme:
+      type: object
+      required: [id, name, ministry, minFunding, maxFunding, subsidyPercent, eligibleCommunities, eligibleSectors, avgProcessingDays, successRate, applicationsCount]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        ministry:
+          type: string
+        description:
+          type: string
+        minFunding:
+          type: integer
+        maxFunding:
+          type: integer
+        subsidyPercent:
+          type: ["number", "null"]
+        subsidyLabel:
+          type: ["string", "null"]
+        eligibleCommunities:
+          type: array
+          items:
+            type: string
+        eligibleSectors:
+          type: array
+          items:
+            type: string
+        avgProcessingDays:
+          type: integer
+        successRate:
+          type: number
+        applicationsCount:
+          type: integer
+        builderTip:
+          type: ["string", "null"]
+        builderTipAuthor:
+          type: ["string", "null"]
+        tags:
+          type: array
+          items:
+            type: string
+
+    SchemeMatch:
+      type: object
+      required: [scheme, matchScore, matchReasons]
+      properties:
+        scheme:
+          $ref: "#/components/schemas/Scheme"
+        matchScore:
+          type: integer
+        matchReasons:
+          type: array
+          items:
+            type: string
+        localStats:
+          type: object
+          properties:
+            applications:
+              type: integer
+            approved:
+              type: number
+            avgDays:
+              type: integer
+
+    # DOCUMENT
+    Document:
+      type: object
+      required: [id, entrepreneurId, name, description, status, required]
+      properties:
+        id:
+          type: integer
+        entrepreneurId:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum: [verified, needs_reupload, pending, not_uploaded]
+        required:
+          type: boolean
+        builderNote:
+          type: ["string", "null"]
+        uploadedAt:
+          type: ["string", "null"]
+        verifiedAt:
+          type: ["string", "null"]
+        iconEmoji:
+          type: string
+
+    DocumentStatusUpdate:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+        builderNote:
+          type: ["string", "null"]
+
+    # APPLICATION
+    Application:
+      type: object
+      required: [id, entrepreneurId, schemeId, bankName, status, amountRequested, submittedAt]
+      properties:
+        id:
+          type: integer
+        entrepreneurId:
+          type: integer
+        schemeId:
+          type: integer
+        schemeName:
+          type: string
+        bankName:
+          type: string
+        branchName:
+          type: ["string", "null"]
+        applicationNumber:
+          type: string
+        status:
+          type: string
+          enum: [submitted, docs_verified, under_review, bank_decision, disbursement, completed, rejected]
+        amountRequested:
+          type: integer
+        subsidyAmount:
+          type: ["integer", "null"]
+        submittedAt:
+          type: string
+        expectedDecisionAt:
+          type: ["string", "null"]
+        completedAt:
+          type: ["string", "null"]
+        daysPending:
+          type: integer
+        avgProcessingDays:
+          type: integer
+        approvalRate:
+          type: number
+        events:
+          type: array
+          items:
+            $ref: "#/components/schemas/ApplicationEvent"
+
+    ApplicationEvent:
+      type: object
+      required: [id, title, date, iconEmoji]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        date:
+          type: string
+        description:
+          type: ["string", "null"]
+        iconEmoji:
+          type: string
+        eventType:
+          type: string
+
+    # MESSAGES
+    Message:
+      type: object
+      required: [id, conversationId, senderId, senderName, senderRole, content, sentAt]
+      properties:
+        id:
+          type: integer
+        conversationId:
+          type: integer
+        senderId:
+          type: integer
+        senderName:
+          type: string
+        senderRole:
+          type: string
+        content:
+          type: string
+        sentAt:
+          type: string
+        isRead:
+          type: boolean
+        attachmentUrl:
+          type: ["string", "null"]
+        attachmentName:
+          type: ["string", "null"]
+
+    MessageInput:
+      type: object
+      required: [conversationId, content]
+      properties:
+        conversationId:
+          type: integer
+        content:
+          type: string
+        attachmentUrl:
+          type: ["string", "null"]
+
+    Conversation:
+      type: object
+      required: [id, participantId, participantName, participantRole, lastMessage, lastMessageAt, unreadCount]
+      properties:
+        id:
+          type: integer
+        participantId:
+          type: integer
+        participantName:
+          type: string
+        participantRole:
+          type: string
+        participantAvatarUrl:
+          type: ["string", "null"]
+        lastMessage:
+          type: string
+        lastMessageAt:
+          type: string
+        unreadCount:
+          type: integer
+        isOnline:
+          type: boolean
+
+    # JOURNEY
+    Journey:
+      type: object
+      required: [entrepreneurId, businessName, currentStage, milestones, narrativeText]
+      properties:
+        entrepreneurId:
+          type: integer
+        businessName:
+          type: string
+        currentStage:
+          type: string
+        currentApplication:
+          $ref: "#/components/schemas/Application"
+        assignedBuilder:
+          $ref: "#/components/schemas/Builder"
+        milestones:
+          type: array
+          items:
+            $ref: "#/components/schemas/Milestone"
+        narrativeText:
+          type: string
+        documentsCompleted:
+          type: integer
+        documentsTotal:
+          type: integer
+
+    Milestone:
+      type: object
+      required: [id, stage, title, status, date]
+      properties:
+        id:
+          type: integer
+        stage:
+          type: string
+        title:
+          type: string
+        subtitle:
+          type: ["string", "null"]
+        status:
+          type: string
+          enum: [completed, current, upcoming]
+        date:
+          type: ["string", "null"]
+        iconEmoji:
+          type: string
+        color:
+          type: string
+
+    JourneyEvent:
+      type: object
+      required: [id, title, date, iconEmoji, eventType]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: ["string", "null"]
+        date:
+          type: string
+        iconEmoji:
+          type: string
+        eventType:
+          type: string
+        actorName:
+          type: ["string", "null"]
+
+    # ADMIN
+    AdminStats:
+      type: object
+      required: [totalBusinesses, totalFundingEnabled, totalJobsCreated, activeBuilders, pendingCases, avgProcessingDays, monthlyGrowthBusinesses, monthlyGrowthFunding, monthlyGrowthJobs]
+      properties:
+        totalBusinesses:
+          type: integer
+        totalFundingEnabled:
+          type: integer
+        totalJobsCreated:
+          type: integer
+        activeBuilders:
+          type: integer
+        pendingCases:
+          type: integer
+        avgProcessingDays:
+          type: number
+        monthlyGrowthBusinesses:
+          type: number
+        monthlyGrowthFunding:
+          type: number
+        monthlyGrowthJobs:
+          type: number
+        successRate:
+          type: number
+        scStEntrepreneurs:
+          type: integer
+        womenEntrepreneurs:
+          type: integer
+
+    ActivityEvent:
+      type: object
+      required: [id, text, timestamp, eventType, iconEmoji]
+      properties:
+        id:
+          type: integer
+        text:
+          type: string
+        timestamp:
+          type: string
+        eventType:
+          type: string
+        iconEmoji:
+          type: string
+        actorName:
+          type: string
+        district:
+          type: ["string", "null"]
+
+    DistrictStat:
+      type: object
+      required: [district, state, entrepreneurCount, fundingEnabled, successRate]
+      properties:
+        district:
+          type: string
+        state:
+          type: string
+        entrepreneurCount:
+          type: integer
+        fundingEnabled:
+          type: integer
+        successRate:
+          type: number
+        activeBuilders:
+          type: integer
+        pendingCases:
+          type: integer
+        lat:
+          type: number
+        lng:
+          type: number
+
+    AdminAlert:
+      type: object
+      required: [id, title, description, severity, timestamp]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        severity:
+          type: string
+          enum: [critical, warning, info, success]
+        timestamp:
+          type: string
+        actionLabel:
+          type: ["string", "null"]
+        resolved:
+          type: boolean

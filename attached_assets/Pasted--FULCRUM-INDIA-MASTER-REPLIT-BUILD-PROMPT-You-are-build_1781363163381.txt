@@ -1,0 +1,516 @@
+# FULCRUM-INDIA — MASTER REPLIT BUILD PROMPT
+
+You are building **Fulcrum-India**.
+
+Read EVERY uploaded markdown and HTML mockup before writing any code.
+
+The HTML files define UX flow and information hierarchy.
+
+The markdown files define business logic, architecture and interactions.
+
+DO NOT simply recreate the HTML.
+
+Build a significantly more polished and premium experience while preserving the same user journeys.
+
+---
+
+# PRODUCT PHILOSOPHY
+
+Fulcrum-India is NOT a government portal.
+
+It should feel like
+
+40% Palantir
+25% Stripe
+15% Linear
+10% Apple
+5% Swiggy
+5% Zomato
+
+Dark mode first.
+
+Every screen should feel alive.
+
+Every interaction should provide feedback.
+
+Every page should tell a story.
+
+---
+
+# BRAND
+
+Replace every occurrence of
+
+Fulcrum OS
+
+with
+
+Fulcrum-India
+
+Tagline
+
+India's Community Intelligence Platform
+
+---
+
+# DESIGN LANGUAGE
+
+Ultra Premium Enterprise SaaS
+
+Glass morphism
+
+Soft gradients
+
+Depth
+
+Micro interactions
+
+Animated cards
+
+Animated counters
+
+Smooth page transitions
+
+Animated progress
+
+Animated timeline
+
+Floating backgrounds
+
+Live activity
+
+Animated gradients
+
+Subtle glow
+
+Motion should communicate meaning.
+
+Never animate just for decoration.
+
+---
+
+# DO NOT BUILD
+
+Government website
+
+Bootstrap dashboard
+
+Admin template
+
+Generic CRM
+
+Plain cards
+
+Static tables
+
+Traditional forms
+
+---
+
+# GLOBAL INTERACTIONS
+
+Every button
+
+hover:
+
+* lift 4px
+* glow
+* scale 1.02
+
+click:
+
+* compress 0.98
+
+Every card
+
+hover:
+
+* elevate
+* border glow
+* shadow
+* slight tilt
+* animated top border
+
+Every navigation item
+
+hover:
+
+* animated background
+* icon motion
+* text slide
+
+Every page
+
+fade
+slide
+shared layout transition
+
+Use Framer Motion everywhere.
+
+---
+
+# BACKGROUNDS
+
+Animated gradient mesh
+
+Floating particles
+
+Grid overlays
+
+Parallax sections
+
+Live pulse indicators
+
+Soft ambient lighting
+
+Dynamic blur layers
+
+---
+
+# MOCK AUTHENTICATION
+
+Do NOT integrate real authentication.
+
+Demo Login.
+
+Accept:
+
+Entrepreneur
+
+Phone:
+9876543210
+
+OTP:
+123456
+
+Builder
+
+9876543211
+
+123456
+
+District Coordinator
+
+9876543212
+
+123456
+
+Admin
+
+9876543213
+
+123456
+
+Super Admin
+
+9876543214
+
+123456
+
+Skip OTP verification.
+
+Automatically authenticate.
+
+Store session in localStorage.
+
+Remember selected role.
+
+Logout button always visible.
+
+---
+
+# DEMO ACCOUNT SWITCHER
+
+Add floating component
+
+"Explore as"
+
+Entrepreneur
+
+Builder
+
+Coordinator
+
+Admin
+
+Super Admin
+
+Switch instantly without logout.
+
+---
+
+# MOCK DATA
+
+Generate realistic Indian data.
+
+50 Entrepreneurs
+
+20 Builders
+
+30 Schemes
+
+10 Banks
+
+150 Documents
+
+300 Messages
+
+200 Timeline Events
+
+50 Applications
+
+Use Faker.
+
+Generate profile photos.
+
+Generate company logos.
+
+Generate builder badges.
+
+Generate realistic funding amounts.
+
+Generate timelines.
+
+Generate notifications.
+
+Generate community feed.
+
+---
+
+# LANDING PAGE
+
+Hero animation
+
+Journey animation
+
+Animated India map
+
+Animated counters
+
+Live activity ticker
+
+Builder spotlight carousel
+
+Success stories
+
+Funding tracker
+
+Community pulse
+
+Floating CTA
+
+Mouse parallax
+
+Animated journey path
+
+Every section reveals while scrolling.
+
+---
+
+# JOURNEY PAGE
+
+Animated milestone path
+
+Expandable timeline
+
+Progress grows smoothly
+
+Builder card expands
+
+Funding prediction animation
+
+Knowledge suggestions
+
+Sticky narrative card
+
+Floating action panel
+
+Celebration animation on completion
+
+---
+
+# SCHEMES
+
+Animated filtering
+
+Animated sorting
+
+Search with highlight
+
+Match score radial animation
+
+Expandable recommendations
+
+Comparison drawer
+
+Bookmark interaction
+
+---
+
+# DOCUMENTS
+
+Drag & drop upload
+
+Animated progress
+
+Preview modal
+
+Status morphing
+
+Checklist animation
+
+Confetti when completed
+
+---
+
+# BUILDERS
+
+Card hover expansion
+
+Availability animation
+
+Rating animation
+
+Sorting
+
+Filtering
+
+Profile modal
+
+Impact timeline
+
+Success visualization
+
+---
+
+# MESSAGES
+
+Typing indicator
+
+Online status
+
+Unread pulse
+
+Animated send
+
+Emoji support
+
+File preview
+
+Conversation transitions
+
+---
+
+# APPLICATIONS
+
+Animated journey
+
+Funding timeline
+
+Expandable event history
+
+Status morph
+
+Progress indicator
+
+Live processing animation
+
+---
+
+# ADMIN COMMAND CENTER
+
+Palantir inspired.
+
+Mission Control.
+
+Interactive India map
+
+District drill-down
+
+Heatmaps
+
+Alert drawer
+
+Real-time counters
+
+Animated charts
+
+Builder load balancing
+
+Funding flows
+
+Search everything
+
+Keyboard shortcuts
+
+Resizable panels
+
+Live notification center
+
+---
+
+# UX
+
+Every component must have
+
+Hover
+
+Focus
+
+Active
+
+Loading
+
+Skeleton
+
+Success
+
+Error
+
+Empty
+
+No data
+
+Offline
+
+States.
+
+---
+
+# PERFORMANCE
+
+60 FPS animations
+
+Lazy loading
+
+Component driven
+
+Code splitting
+
+Reusable architecture
+
+Responsive
+
+Dark mode
+
+TypeScript strict
+
+Tailwind
+
+shadcn/ui
+
+Framer Motion
+
+---
+
+# EXPERIENCE
+
+Every page should feel like a premium enterprise SaaS product that could compete with Palantir, Stripe or Linear.
+
+Visitors should immediately think:
+
+"This is not a prototype. This looks like a funded Series A startup."
+
+Backend integration will happen later.
+
+Until then, create intelligent mock APIs and realistic interactions so the application feels completely alive.

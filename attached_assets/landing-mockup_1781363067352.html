@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fulcrum OS — The Operating System for Community Entrepreneurship</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  :root {
+    --primary: #6366F1;
+    --primary-dark: #4F46E5;
+    --accent: #F59E0B;
+    --success: #10B981;
+    --bg-dark: #0B0F19;
+    --bg-card: #151B2B;
+    --bg-card-hover: #1E2640;
+    --text-primary: #F8FAFC;
+    --text-secondary: #94A3B8;
+    --text-muted: #64748B;
+    --border: #1E293B;
+    --glow: rgba(99, 102, 241, 0.15);
+  }
+  
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    overflow-x: hidden;
+  }
+  
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(11, 15, 25, 0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo { font-size: 20px; font-weight: 800; color: var(--text-primary); text-decoration: none; }
+  .logo span { color: var(--primary); }
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text-primary); }
+  .nav-cta {
+    background: var(--primary); color: white; padding: 10px 20px;
+    border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 600;
+    transition: all 0.2s; box-shadow: 0 0 20px var(--glow);
+  }
+  .nav-cta:hover { background: var(--primary-dark); transform: translateY(-1px); }
+  
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+    padding: 120px 40px 80px;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: 
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99,102,241,0.3), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 50%, rgba(139,92,246,0.15), transparent),
+      radial-gradient(ellipse 60% 40% at 20% 80%, rgba(245,158,11,0.1), transparent);
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image: 
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-content { position: relative; z-index: 1; text-align: center; max-width: 800px; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.3);
+    padding: 8px 16px; border-radius: 100px; font-size: 13px; color: var(--primary);
+    margin-bottom: 32px; animation: fadeInUp 0.6s ease;
+  }
+  .hero-badge .pulse { width: 8px; height: 8px; background: var(--success); border-radius: 50%; animation: pulse 2s infinite; }
+  .hero h1 {
+    font-size: 72px; font-weight: 900; line-height: 1.05; letter-spacing: -3px;
+    margin-bottom: 24px; animation: fadeInUp 0.6s ease 0.1s both;
+  }
+  .hero h1 .gradient {
+    background: linear-gradient(135deg, #6366F1, #A78BFA, #F59E0B);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero p {
+    font-size: 20px; color: var(--text-secondary); line-height: 1.6;
+    max-width: 600px; margin: 0 auto 40px; animation: fadeInUp 0.6s ease 0.2s both;
+  }
+  .hero-buttons { display: flex; gap: 16px; justify-content: center; animation: fadeInUp 0.6s ease 0.3s both; }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary), #7C3AED);
+    color: white; padding: 16px 32px; border-radius: 12px;
+    font-size: 16px; font-weight: 700; text-decoration: none;
+    transition: all 0.3s; box-shadow: 0 0 40px var(--glow);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 40px var(--glow); }
+  .btn-secondary {
+    background: var(--bg-card); color: var(--text-primary);
+    padding: 16px 32px; border-radius: 12px;
+    font-size: 16px; font-weight: 600; text-decoration: none;
+    border: 1px solid var(--border); transition: all 0.3s;
+  }
+  .btn-secondary:hover { background: var(--bg-card-hover); transform: translateY(-2px); }
+  
+  /* LIVE STATS BAR */
+  .live-stats {
+    position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 48px; animation: fadeInUp 0.6s ease 0.5s both;
+  }
+  .live-stat { text-align: center; }
+  .live-stat .number { font-size: 28px; font-weight: 800; color: var(--text-primary); }
+  .live-stat .number .accent { color: var(--accent); }
+  .live-stat .label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+  .live-stat .live-dot { display: inline-block; width: 6px; height: 6px; background: var(--success); border-radius: 50%; margin-left: 4px; animation: pulse 2s infinite; }
+  
+  /* JOURNEY PREVIEW */
+  .journey-preview {
+    padding: 120px 40px;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .section-label {
+    font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+    color: var(--primary); margin-bottom: 16px;
+  }
+  .section-title {
+    font-size: 48px; font-weight: 800; letter-spacing: -2px; margin-bottom: 16px;
+  }
+  .section-subtitle {
+    font-size: 18px; color: var(--text-secondary); max-width: 600px; margin-bottom: 60px;
+  }
+  
+  .journey-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .journey-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 32px; transition: all 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .journey-card:hover { transform: translateY(-4px); border-color: var(--primary); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+  .journey-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .journey-card:hover::before { opacity: 1; }
+  .journey-card .emoji { font-size: 40px; margin-bottom: 20px; }
+  .journey-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
+  .journey-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+  .journey-card .tag {
+    display: inline-block; margin-top: 16px;
+    background: rgba(99,102,241,0.1); color: var(--primary);
+    padding: 4px 12px; border-radius: 100px; font-size: 12px; font-weight: 600;
+  }
+  
+  /* HOW IT WORKS */
+  .how-it-works {
+    padding: 120px 40px;
+    background: linear-gradient(180deg, transparent, rgba(99,102,241,0.03), transparent);
+  }
+  .how-it-works-inner { max-width: 1200px; margin: 0 auto; }
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 60px; }
+  .step { position: relative; }
+  .step-number {
+    width: 48px; height: 48px; border-radius: 12px;
+    background: linear-gradient(135deg, var(--primary), #7C3AED);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 800; margin-bottom: 24px;
+    box-shadow: 0 0 30px var(--glow);
+  }
+  .step h3 { font-size: 22px; font-weight: 700; margin-bottom: 12px; }
+  .step p { font-size: 15px; color: var(--text-secondary); line-height: 1.7; }
+  
+  /* LIVE FEED */
+  .live-feed { padding: 120px 40px; max-width: 1200px; margin: 0 auto; }
+  .feed-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; margin-top: 60px; }
+  .feed-main { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 40px; }
+  .feed-main h3 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+  .feed-main .subtitle { color: var(--text-secondary); font-size: 14px; margin-bottom: 32px; }
+  .feed-item {
+    display: flex; align-items: center; gap: 16px; padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+    animation: slideIn 0.4s ease;
+  }
+  .feed-item:last-child { border-bottom: none; }
+  .feed-item .avatar {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .feed-item .avatar.green { background: rgba(16,185,129,0.15); }
+  .feed-item .avatar.blue { background: rgba(99,102,241,0.15); }
+  .feed-item .avatar.amber { background: rgba(245,158,11,0.15); }
+  .feed-item .text { flex: 1; }
+  .feed-item .text .name { font-size: 14px; font-weight: 600; }
+  .feed-item .text .action { font-size: 13px; color: var(--text-secondary); }
+  .feed-item .time { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+  
+  .feed-sidebar { display: flex; flex-direction: column; gap: 24px; }
+  .impact-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 28px; text-align: center;
+  }
+  .impact-card .big-number { font-size: 48px; font-weight: 900; background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .impact-card .label { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+  .impact-card .trend { font-size: 12px; color: var(--success); margin-top: 8px; }
+  
+  /* TESTIMONIALS */
+  .testimonials { padding: 120px 40px; text-align: center; }
+  .testimonial-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1200px; margin: 60px auto 0; }
+  .testimonial {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 32px; text-align: left;
+    transition: all 0.3s;
+  }
+  .testimonial:hover { transform: translateY(-4px); border-color: var(--primary); }
+  .testimonial .stars { color: var(--accent); font-size: 16px; margin-bottom: 16px; }
+  .testimonial .quote { font-size: 15px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 20px; }
+  .testimonial .author { display: flex; align-items: center; gap: 12px; }
+  .testimonial .author-avatar {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--primary), #7C3AED);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 700;
+  }
+  .author-name { font-size: 14px; font-weight: 600; }
+  .author-title { font-size: 12px; color: var(--text-muted); }
+  
+  /* CTA */
+  .cta {
+    padding: 120px 40px; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .cta-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(99,102,241,0.2), transparent);
+  }
+  .cta-content { position: relative; z-index: 1; }
+  .cta h2 { font-size: 56px; font-weight: 900; letter-spacing: -2px; margin-bottom: 20px; }
+  .cta p { font-size: 20px; color: var(--text-secondary); margin-bottom: 40px; }
+  .cta .btn-primary { font-size: 18px; padding: 20px 40px; }
+  
+  /* FOOTER */
+  footer {
+    padding: 80px 40px 40px;
+    border-top: 1px solid var(--border);
+    max-width: 1200px; margin: 0 auto;
+  }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 40px; }
+  .footer-brand .logo { font-size: 24px; font-weight: 800; margin-bottom: 16px; display: block; }
+  .footer-brand p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 20px; }
+  .footer-col h4 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 20px; }
+  .footer-col a { display: block; font-size: 14px; color: var(--text-secondary); text-decoration: none; margin-bottom: 12px; transition: color 0.2s; }
+  .footer-col a:hover { color: var(--text-primary); }
+  .footer-bottom {
+    margin-top: 60px; padding-top: 32px;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-bottom p { font-size: 13px; color: var(--text-muted); }
+  .footer-bottom .social-links { display: flex; gap: 16px; }
+  .footer-bottom .social-links a {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: var(--bg-card); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-secondary); text-decoration: none; font-size: 14px;
+    transition: all 0.2s;
+  }
+  .footer-bottom .social-links a:hover { background: var(--primary); color: white; border-color: var(--primary); }
+  
+  /* ANIMATIONS */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 40px; }
+    .journey-cards { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr; }
+    .feed-grid { grid-template-columns: 1fr; }
+    .testimonial-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .live-stats { flex-wrap: wrap; gap: 24px; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">Fulcrum<span>OS</span></a>
+  <div class="nav-links">
+    <a href="#">For Entrepreneurs</a>
+    <a href="#">For Builders</a>
+    <a href="#">Community</a>
+    <a href="#">About</a>
+  </div>
+  <a href="#" class="nav-cta">Get Started →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="pulse"></span>
+      Live — 1,247 entrepreneurs on platform
+    </div>
+    <h1>
+      Every Entrepreneur<br>
+      <span class="gradient">Deserves a Guide</span>
+    </h1>
+    <p>
+      From idea to income. Get matched with a Community Builder, 
+      discover the right schemes, and track your journey — all in one place.
+    </p>
+    <div class="hero-buttons">
+      <a href="#" class="btn-primary">Start Your Journey →</a>
+      <a href="#" class="btn-secondary">Watch How It Works</a>
+    </div>
+  </div>
+  <div class="live-stats">
+    <div class="live-stat">
+      <div class="number">₹42.8<span class="accent">Cr</span><span class="live-dot"></span></div>
+      <div class="label">Funding Enabled</div>
+    </div>
+    <div class="live-stat">
+      <div class="number">1,247<span class="live-dot"></span></div>
+      <div class="label">Businesses Started</div>
+    </div>
+    <div class="live-stat">
+      <div class="number">3,842<span class="live-dot"></span></div>
+      <div class="label">Jobs Created</div>
+    </div>
+    <div class="live-stat">
+      <div class="number">89<span class="accent">%</span><span class="live-dot"></span></div>
+      <div class="label">Success Rate</div>
+    </div>
+  </div>
+</section>
+
+<!-- JOURNEY CARDS -->
+<section class="journey-preview">
+  <div class="section-label">How Fulcrum Works</div>
+  <h2 class="section-title">Your journey, simplified.</h2>
+  <p class="section-subtitle">Three steps. One platform. A community behind you.</p>
+  <div class="journey-cards">
+    <div class="journey-card">
+      <div class="emoji">🌱</div>
+      <h3>Tell us your idea</h3>
+      <p>Share your business idea, location, and goals. Takes 2 minutes.</p>
+      <span class="tag">2 min</span>
+    </div>
+    <div class="journey-card">
+      <div class="emoji">🤝</div>
+      <h3>Get your Builder</h3>
+      <p>Matched with a verified Community Builder who speaks your language.</p>
+      <span class="tag">24 hours</span>
+    </div>
+    <div class="journey-card">
+      <div class="emoji">🚀</div>
+      <h3>Launch & Grow</h3>
+      <p>Documents, schemes, banks, tracking — we handle the complexity.</p>
+      <span class="tag">90 days avg</span>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-it-works">
+  <div class="how-it-works-inner">
+    <div class="section-label">The Process</div>
+    <h2 class="section-title">From idea to income.</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h3>Quick Assessment</h3>
+        <p>Answer 5 simple questions about your business idea, location, and funding needs. Our system identifies the best path for you.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <h3>Builder Matching</h3>
+        <p>Get paired with a Community Builder based on your industry, language, and location. They're your guide through the entire process.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <h3>End-to-End Support</h3>
+        <p>Documents, scheme applications, bank follow-ups, GST registration — your builder and our platform handle it all.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE FEED -->
+<section class="live-feed">
+  <div class="section-label">Live Community</div>
+  <h2 class="section-title">What's happening right now.</h2>
+  <div class="feed-grid">
+    <div class="feed-main">
+      <h3>Today on Fulcrum</h3>
+      <p class="subtitle">Real journeys. Real impact.</p>
+      <div class="feed-item">
+        <div class="avatar green">🎉</div>
+        <div class="text">
+          <div class="name">Lakshmi got PMEGP approved!</div>
+          <div class="action">Indian Bank · ₹18L · Food Processing</div>
+        </div>
+        <div class="time">2m ago</div>
+      </div>
+      <div class="feed-item">
+        <div class="avatar blue">📄</div>
+        <div class="text">
+          <div class="name">Rahul uploaded GST certificate</div>
+          <div class="action">Garment Unit · Madurai</div>
+        </div>
+        <div class="time">8m ago</div>
+      </div>
+      <div class="feed-item">
+        <div class="avatar amber">🤝</div>
+        <div class="text">
+          <div class="name">Murugan completed his 50th mentorship</div>
+          <div class="action">42 businesses · 89% success rate</div>
+        </div>
+        <div class="time">15m ago</div>
+      </div>
+      <div class="feed-item">
+        <div class="avatar green">✅</div>
+        <div class="text">
+          <div class="name">Selvi received Udyam registration</div>
+          <div class="action">Textile Export · Coimbatore</div>
+        </div>
+        <div class="time">32m ago</div>
+      </div>
+      <div class="feed-item">
+        <div class="avatar blue">🏦</div>
+        <div class="text">
+          <div class="name">Arun applied to Stand-Up India</div>
+          <div class="action">SBI · ₹45L · Manufacturing</div>
+        </div>
+        <div class="time">1h ago</div>
+      </div>
+    </div>
+    <div class="feed-sidebar">
+      <div class="impact-card">
+        <div class="big-number">₹42.8Cr</div>
+        <div class="label">Total Funding Enabled</div>
+        <div class="trend">↑ 8% this month</div>
+      </div>
+      <div class="impact-card">
+        <div class="big-number">3,842</div>
+        <div class="label">Jobs Created</div>
+        <div class="trend">↑ 15% this month</div>
+      </div>
+      <div class="impact-card">
+        <div class="big-number">89%</div>
+        <div class="label">Success Rate</div>
+        <div class="trend">↑ 3% this month</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="section-label">Success Stories</div>
+  <h2 class="section-title">Real people. Real impact.</h2>
+  <div class="testimonial-grid">
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p class="quote">"Murugan helped me get PMEGP from Indian Bank after SBI rejected me. The document checklist alone saved me weeks."</p>
+      <div class="author">
+        <div class="author-avatar">L</div>
+        <div>
+          <div class="author-name">Lakshmi R.</div>
+          <div class="author-title">Organic Millet Foods · Madurai</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p class="quote">"I didn't know about Stand-Up India until Fulcrum matched me. Got ₹45L for my manufacturing unit. The tracking feature kept me sane."</p>
+      <div class="author">
+        <div class="author-avatar">R</div>
+        <div>
+          <div class="author-name">Rahul K.</div>
+          <div class="author-title">Garment Unit · Tirupur</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p class="quote">"From idea to first employee in 6 months. The builder network and scheme matching is unreal. This platform is a game-changer."</p>
+      <div class="author">
+        <div class="author-avatar">S</div>
+        <div>
+          <div class="author-name">Selvi M.</div>
+          <div class="author-title">Textile Export · Coimbatore</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="cta-bg"></div>
+  <div class="cta-content">
+    <h2>Your business journey<br><span class="gradient">starts here.</span></h2>
+    <p>Free forever for entrepreneurs. No hidden fees. No catch.</p>
+    <a href="#" class="btn-primary">Start Your Journey →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo">Fulcrum<span>OS</span></span>
+      <p>Building the institutional memory of community entrepreneurship. Every journey makes the next one easier.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <a href="#">Journey Engine</a>
+      <a href="#">Scheme Matching</a>
+      <a href="#">Builder Network</a>
+      <a href="#">Document Vault</a>
+      <a href="#">Tracking</a>
+    </div>
+    <div class="footer-col">
+      <h4>Community</h4>
+      <a href="#">Success Stories</a>
+      <a href="#">Knowledge Base</a>
+      <a href="#">Events</a>
+      <a href="#">Blog</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#">About Us</a>
+      <a href="#">Careers</a>
+      <a href="#">Press</a>
+      <a href="#">Contact</a>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <a href="#">Terms</a>
+      <a href="#">Privacy</a>
+      <a href="#">Accessibility</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Fulcrum OS. Made with ❤️ in India. Built on India Stack.</p>
+    <div class="social-links">
+      <a href="#">𝕏</a>
+      <a href="#">in</a>
+      <a href="#">▶</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
