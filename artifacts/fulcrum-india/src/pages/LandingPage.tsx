@@ -71,26 +71,32 @@ export default function LandingPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-lg lg:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto"
+            className="text-lg lg:text-xl text-muted-foreground mb-4 max-w-2xl mx-auto"
           >
             From idea to income. Get matched with a Community Builder, discover the right government schemes, and track your funding journey — all in one place.
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.25 }}
+            className="text-sm text-muted-foreground mb-10 mx-auto"
+          >
+            Bridging India's ₹2.4 lakh crore funding gap —{" "}
+            <span className="text-foreground font-semibold">one entrepreneur at a time.</span>
           </motion.p>
           
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            className="flex items-center justify-center"
           >
             <Link href="/login">
-              <Button size="lg" className="w-full sm:w-auto text-base font-bold h-14 px-8 bg-gradient-to-r from-primary to-secondary hover:from-primary hover:to-primary glow-primary transition-all hover:scale-105">
+              <Button size="lg" className="text-base font-bold h-14 px-8 bg-gradient-to-r from-primary to-secondary hover:from-primary hover:to-primary glow-primary transition-all hover:scale-105">
                 Start Your Journey <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </Link>
-            <p className="text-sm text-muted-foreground max-w-xs text-left leading-relaxed hidden sm:block">
-              Bridging India's ₹2.4 lakh crore funding gap —<br />
-              <span className="text-foreground font-semibold">one entrepreneur at a time.</span>
-            </p>
           </motion.div>
         </div>
 
