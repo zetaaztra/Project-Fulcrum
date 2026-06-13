@@ -761,7 +761,10 @@ export default function LandingPage() {
       <footer className="border-t border-border bg-card py-12 px-6 lg:px-12">
         <div className="max-w-6xl mx-auto grid md:grid-cols-4 gap-8 lg:gap-12">
           <div className="md:col-span-2">
-            <span className="text-xl font-black mb-2 inline-block">Fulcrum<span className="text-primary">-India</span></span>
+            <span className="flex items-center gap-2 text-xl font-black mb-2">
+              <img src="/favicon.svg" alt="Fulcrum Logo" className="w-7 h-7 rounded-md shadow-sm" />
+              <span>Fulcrum<span className="text-primary">-India</span></span>
+            </span>
             <p className="text-muted-foreground text-sm max-w-sm mt-2">Building the institutional memory of community entrepreneurship. Every journey makes the next one easier.</p>
           </div>
           <div>
