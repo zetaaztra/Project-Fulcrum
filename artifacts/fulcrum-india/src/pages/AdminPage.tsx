@@ -165,8 +165,8 @@ export default function AdminPage() {
             <Button variant="link" className="text-primary h-auto p-0">View Directory →</Button>
           </div>
           
-          <div className="flex-1 overflow-x-auto">
-            <table className="w-full text-sm text-left">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm text-left min-w-[600px]">
               <thead className="text-[10px] text-muted-foreground uppercase tracking-wider border-b border-border">
                 <tr>
                   <th className="pb-3 font-semibold">Builder</th>

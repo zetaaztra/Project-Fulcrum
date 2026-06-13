@@ -16,10 +16,16 @@ import {
   Bell,
   Sun,
   Moon,
+  X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export function Sidebar() {
+interface SidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const [location] = useLocation();
   const { session, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
@@ -50,12 +56,18 @@ export function Sidebar() {
   const links = isAdmin ? adminLinks : entrepreneurLinks;
 
   return (
-    <div className="w-64 bg-card border-r border-border flex flex-col fixed inset-y-0 left-0 z-40 overflow-y-auto">
-      <div className="p-6">
-        <Link href={isAdmin ? "/admin" : "/journey"} className="flex items-center gap-2 text-xl font-black tracking-tight">
+    <div className={cn(
+      "w-64 bg-card border-r border-border flex flex-col fixed inset-y-0 left-0 z-40 overflow-y-auto transition-transform duration-300 ease-in-out md:translate-x-0",
+      isOpen ? "translate-x-0" : "-translate-x-full"
+    )}>
+      <div className="p-6 flex items-center justify-between">
+        <Link href={isAdmin ? "/admin" : "/journey"} onClick={onClose} className="flex items-center gap-2 text-xl font-black tracking-tight">
           <img src="/favicon.svg" alt="Fulcrum Logo" className="w-8 h-8 rounded-md shadow-sm" />
           <span>Fulcrum<span className="text-primary">-India</span></span>
         </Link>
+        <button onClick={onClose} className="md:hidden p-1 rounded-md text-muted-foreground hover:bg-muted">
+          <X className="w-5 h-5" />
+        </button>
       </div>
 
       <div className="flex-1 px-4 py-2 space-y-1">

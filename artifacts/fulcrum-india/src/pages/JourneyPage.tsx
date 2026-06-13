@@ -51,7 +51,7 @@ export default function JourneyPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div>
             <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1">Scheme</div>
             <div className="font-semibold text-lg">PMEGP</div>
@@ -115,7 +115,7 @@ export default function JourneyPage() {
         </div>
       </motion.div>
 
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Timeline */}
         <motion.div 
           initial={{ opacity: 0, x: -10 }}

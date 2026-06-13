@@ -468,7 +468,7 @@ export default function LandingPage() {
             <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" /> Live — 1,247 Entrepreneurs Building
           </motion.div>
           <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-            className="text-5xl lg:text-7xl font-black tracking-tight leading-[1.1] mb-6">
+            className="text-4xl md:text-5xl lg:text-7xl font-black tracking-tight leading-[1.1] mb-6">
             Every Entrepreneur <br /><span className="animate-shimmer">Deserves a Guide</span>
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
@@ -519,8 +519,8 @@ export default function LandingPage() {
           <motion.div id="why" initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}>
             <h2 className="text-xs font-bold text-primary uppercase tracking-widest mb-2">Why Fulcrum</h2>
             <h3 className="text-3xl lg:text-4xl font-black mb-6 tracking-tight">The difference is real</h3>
-            <div className="rounded-2xl border border-border overflow-hidden">
-              <div className="grid grid-cols-2 bg-muted/30">
+            <div className="rounded-2xl border border-border overflow-hidden overflow-x-auto">
+              <div className="grid grid-cols-2 bg-muted/30 min-w-[400px]">
                 <div className="px-5 py-3 text-xs font-black uppercase tracking-widest text-destructive/80 border-r border-border">Without Fulcrum</div>
                 <div className="px-5 py-3 text-xs font-black uppercase tracking-widest text-primary">With Fulcrum</div>
               </div>
@@ -533,7 +533,7 @@ export default function LandingPage() {
                 ["18-month average",      "6-month average"],
               ] as [string,string][]).map(([bad, good], i) => (
                 <motion.div key={i} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }}
-                  className="grid grid-cols-2 border-t border-border hover:bg-primary/[0.03] transition-colors group">
+                  className="grid grid-cols-2 border-t border-border hover:bg-primary/[0.03] transition-colors group min-w-[400px]">
                   <div className="px-5 py-3.5 text-sm text-muted-foreground border-r border-border line-through decoration-destructive/50">{bad}</div>
                   <div className="px-5 py-3.5 text-sm font-semibold text-foreground flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />{good}
@@ -650,7 +650,7 @@ export default function LandingPage() {
           </motion.div>
           <div className="grid lg:grid-cols-3 gap-12 items-center">
             <div className="lg:col-span-1"><FundingFlow /></div>
-            <div className="lg:col-span-2 grid grid-cols-2 gap-4">
+            <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8 lg:mt-0">
               {[
                 { label: "Schemes Mapped",       val: "340+",   icon: "🗂️" },
                 { label: "Banks Integrated",     val: "28",     icon: "🏦" },

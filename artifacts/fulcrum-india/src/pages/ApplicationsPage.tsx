@@ -19,7 +19,7 @@ export default function ApplicationsPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {[
           { label: "Amount Requested", value: "₹18,00,000", color: "text-foreground" },
           { label: "Subsidy (35%)", value: "₹6,30,000", color: "text-success" },
