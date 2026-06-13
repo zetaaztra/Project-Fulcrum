@@ -7,24 +7,34 @@ interface ThemeContextType {
   toggleTheme: () => void;
 }
 
+const THEME_KEY = "fulcrum_theme_v2";
+
+function applyTheme(theme: Theme) {
+  const root = document.documentElement;
+  if (theme === "dark") {
+    root.classList.add("dark");
+    root.classList.remove("light");
+  } else {
+    root.classList.remove("dark");
+    root.classList.add("light");
+  }
+}
+
+function getInitialTheme(): Theme {
+  const stored = localStorage.getItem(THEME_KEY);
+  const theme = (stored as Theme) ?? "light";
+  applyTheme(theme);
+  return theme;
+}
+
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(() => {
-    const stored = localStorage.getItem("fulcrum_theme");
-    return (stored as Theme) ?? "dark";
-  });
+  const [theme, setTheme] = useState<Theme>(getInitialTheme);
 
   useEffect(() => {
-    const root = document.documentElement;
-    if (theme === "dark") {
-      root.classList.add("dark");
-      root.classList.remove("light");
-    } else {
-      root.classList.remove("dark");
-      root.classList.add("light");
-    }
-    localStorage.setItem("fulcrum_theme", theme);
+    applyTheme(theme);
+    localStorage.setItem(THEME_KEY, theme);
   }, [theme]);
 
   const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));

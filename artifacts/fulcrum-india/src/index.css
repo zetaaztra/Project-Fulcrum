@@ -250,16 +250,34 @@
 }
 
 /* Custom Gradients and Textures for Fulcrum */
-.bg-gradient-mesh {
+
+/* Dark mode mesh */
+.dark .bg-gradient-mesh {
   background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99,102,241,0.25), transparent),
               radial-gradient(ellipse 60% 40% at 80% 50%, rgba(139,92,246,0.15), transparent),
               radial-gradient(ellipse 60% 40% at 20% 80%, rgba(245,158,11,0.1), transparent);
 }
-.bg-grid-overlay {
+/* Light mode mesh — stronger, more vivid */
+.light .bg-gradient-mesh, .bg-gradient-mesh {
+  background: radial-gradient(ellipse 80% 55% at 50% -10%, rgba(99,102,241,0.18), transparent),
+              radial-gradient(ellipse 60% 45% at 85% 40%, rgba(139,92,246,0.12), transparent),
+              radial-gradient(ellipse 55% 40% at 15% 75%, rgba(245,158,11,0.10), transparent),
+              radial-gradient(ellipse 70% 50% at 30% 20%, rgba(99,102,241,0.08), transparent);
+}
+
+/* Dark grid uses white lines */
+.dark .bg-grid-overlay {
   background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
                     linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
   background-size: 60px 60px;
 }
+/* Light grid uses dark lines */
+.light .bg-grid-overlay, .bg-grid-overlay {
+  background-image: linear-gradient(rgba(99,102,241,0.06) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(99,102,241,0.06) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
 .text-gradient {
   background: linear-gradient(135deg, #6366F1, #A78BFA, #F59E0B);
   -webkit-background-clip: text;
@@ -271,3 +289,22 @@
 .glow-primary-hover:hover {
   box-shadow: 0 10px 40px rgba(99, 102, 241, 0.3);
 }
+
+/* Floating orb animations */
+@keyframes float-orb-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%  { transform: translate(30px, -40px) scale(1.08); }
+  66%  { transform: translate(-20px, 20px) scale(0.95); }
+}
+@keyframes float-orb-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  40%  { transform: translate(-35px, 30px) scale(1.05); }
+  70%  { transform: translate(25px, -20px) scale(0.97); }
+}
+@keyframes float-orb-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(20px, 35px) scale(1.06); }
+}
+.animate-orb-1 { animation: float-orb-1 12s ease-in-out infinite; }
+.animate-orb-2 { animation: float-orb-2 16s ease-in-out infinite; }
+.animate-orb-3 { animation: float-orb-3 10s ease-in-out infinite; }

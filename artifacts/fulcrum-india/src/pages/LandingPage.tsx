@@ -45,6 +45,13 @@ export default function LandingPage() {
       <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 px-6 lg:px-12 flex flex-col items-center justify-center text-center min-h-[90vh]">
         <div className="absolute inset-0 bg-gradient-mesh opacity-40"></div>
         <div className="absolute inset-0 bg-grid-overlay opacity-30"></div>
+
+        {/* Floating orbs */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="animate-orb-1 absolute top-[15%] left-[10%] w-72 h-72 rounded-full bg-primary/10 blur-3xl" />
+          <div className="animate-orb-2 absolute top-[40%] right-[8%] w-96 h-96 rounded-full bg-secondary/10 blur-3xl" />
+          <div className="animate-orb-3 absolute bottom-[10%] left-[30%] w-64 h-64 rounded-full bg-accent/10 blur-3xl" />
+        </div>
         
         <div className="relative z-10 max-w-4xl mx-auto">
           <motion.div 
