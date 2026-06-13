@@ -1,9 +1,12 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowRight, Play, TrendingUp, Users, Building, ShieldCheck, Activity } from "lucide-react";
+import { ArrowRight, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTheme } from "@/context/ThemeContext";
 
 export default function LandingPage() {
+  const { theme, toggleTheme } = useTheme();
+
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       {/* Navigation */}
@@ -18,7 +21,15 @@ export default function LandingPage() {
           <a href="#community" className="hover:text-foreground transition-colors">Community</a>
           <a href="#builders" className="hover:text-foreground transition-colors">For Builders</a>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={toggleTheme}
+            data-testid="button-theme-toggle"
+            className="w-9 h-9 flex items-center justify-center rounded-lg border border-border bg-card hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground"
+            aria-label="Toggle theme"
+          >
+            {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+          </button>
           <Link href="/login">
             <Button variant="ghost" className="hidden sm:flex font-semibold">Sign In</Button>
           </Link>
@@ -76,9 +87,10 @@ export default function LandingPage() {
                 Start Your Journey <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </Link>
-            <Button size="lg" variant="outline" className="w-full sm:w-auto text-base font-bold h-14 px-8 border-border hover:bg-card-hover hover:border-primary/50 transition-all">
-              <Play className="w-5 h-5 mr-2" /> Watch Story
-            </Button>
+            <p className="text-sm text-muted-foreground max-w-xs text-left leading-relaxed hidden sm:block">
+              Bridging India's ₹2.4 lakh crore funding gap —<br />
+              <span className="text-foreground font-semibold">one entrepreneur at a time.</span>
+            </p>
           </motion.div>
         </div>
 
