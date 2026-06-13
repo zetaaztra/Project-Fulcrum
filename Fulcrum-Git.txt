@@ -1,0 +1,10 @@
+
+git init
+git add .
+git commit -m "HaShem Adonoi Eloheinu Melech HaOlam help me with this first commit"
+git branch -M main
+git remote add origin https://github.com/zetaaztra/Project-Fulcrum.git
+git push -u origin main
+
+$env:PORT="5173"; $env:BASE_PATH="/"; pnpm run dev	Start the frontend (port 5173)
+pnpm run dev:api	Start the API server (port 8080)

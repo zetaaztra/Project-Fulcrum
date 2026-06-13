@@ -1,5 +1,5 @@
 # FULCRUM OS — COMPLETE BUILD PROMPT WITH UI/UX
-## Copy this ENTIRE content into Replit Agent
+## Copy this ENTIRE content into Pravin Agent
 
 ═══════════════════════════════════════════════════════
 
@@ -9,7 +9,7 @@ Build Fulcrum OS — The Operating System for Community Entrepreneurship.
 
 Frontend: Next.js 14 (App Router), TypeScript, Tailwind CSS, shadcn/ui, Framer Motion
 Backend: FastAPI, Python 3.12, SQLAlchemy 2.0, Pydantic
-Database: PostgreSQL (Replit managed)
+Database: PostgreSQL (Pravin managed)
 Cache: Redis (Upstash free tier)
 Auth: JWT + OTP via SMS
 Storage: Cloudflare R2 (S3-compatible)
