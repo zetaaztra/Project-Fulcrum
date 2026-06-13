@@ -423,8 +423,9 @@ export default function LandingPage() {
 
       {/* ── Nav ── */}
       <nav className="fixed top-[3px] left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border h-16 flex items-center justify-between px-6 lg:px-12">
-        <motion.span whileHover={{ scale: 1.04 }} className="text-xl font-black cursor-pointer select-none">
-          Fulcrum<span className="text-primary">-India</span>
+        <motion.span whileHover={{ scale: 1.04 }} className="flex items-center gap-2 text-xl font-black cursor-pointer select-none">
+          <img src="/favicon.svg" alt="Fulcrum Logo" className="w-7 h-7 rounded-md shadow-sm" />
+          <span>Fulcrum<span className="text-primary">-India</span></span>
         </motion.span>
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
           {([["#journey","Journey"],["#why","Why Fulcrum"],["#builders","Builders"],["#impact","Impact"]] as [string,string][]).map(([href, label]) => (

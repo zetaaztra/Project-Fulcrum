@@ -53,10 +53,8 @@ export function Sidebar() {
     <div className="w-64 bg-card border-r border-border flex flex-col fixed inset-y-0 left-0 z-40 overflow-y-auto">
       <div className="p-6">
         <Link href={isAdmin ? "/admin" : "/journey"} className="flex items-center gap-2 text-xl font-black tracking-tight">
-          <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white">
-            F
-          </div>
-          <span>Fulcrum<span className="text-primary">India</span></span>
+          <img src="/favicon.svg" alt="Fulcrum Logo" className="w-8 h-8 rounded-md shadow-sm" />
+          <span>Fulcrum<span className="text-primary">-India</span></span>
         </Link>
       </div>
 
